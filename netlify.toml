@@ -1,0 +1,23 @@
+[build]
+  # This is the directory that you are publishing from (relative to root of your repo)
+  publish = "build"
+
+# SPA redirect that allows internal route handling
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Don't allow use of netlify subdomain kyleeshairdesigns.netlify.com for SEO purposes
+[[redirects]]
+  from = "https://kyleeshairdesigns.netlify.com/*"
+  to = "https://www.kyleeshairdesigns.com/:splat"
+  status = 301
+  force = true
+
+# Don't allow use of netlify subdomain kyleeshairdesigns-dev.netlify.com for SEO purposes
+[[redirects]]
+  from = "https://kyleeshairdesigns-dev.netlify.com/*"
+  to = "https://dev.kyleeshairdesigns.com/:splat"
+  status = 301
+  force = true
