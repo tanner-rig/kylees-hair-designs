@@ -2,17 +2,17 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { getClients } from "../../actions/clientsActions";
-import ClientsTable from "../clients/clientsTable";
 
-class AdminDashboard extends Component {
+class ClientsTable extends Component {
   render() {
     const { clients } = this.props;
 
+    console.log((typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1));
 
     return (
-      <div className="admin-dashboard">
+      <div className="clients">
         {clients.length > 0 ? (
-          <ClientsTable clients={clients} />
+          <div/>
         ) : (
           <div>No clients yet, click to add</div>
         )}
