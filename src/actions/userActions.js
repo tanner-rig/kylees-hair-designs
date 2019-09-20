@@ -7,8 +7,7 @@ import { AUTH_USER, AUTH_ERROR, LOGOUT_USER, GET_USER } from "./types";
 export function loginUser(username, password) {
   return dispatch => {
     const data = { username, password };
-    axios
-      .post(`${API_URL}/user/login`, data)
+    axios.post(`${API_URL}/user/login`, data)
       .then(response => {
         const token = response.data.token;
 

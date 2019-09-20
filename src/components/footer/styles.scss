@@ -1,0 +1,10 @@
+@import '../../styles/variables';
+
+.khd-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  height: 66px;
+  box-shadow: 0 -2px 3px -1px #b3b3b3;
+  background: $colorBlack80;
+}

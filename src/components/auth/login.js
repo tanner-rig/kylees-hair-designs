@@ -1,11 +1,8 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import { toLower } from "lodash";
 
-import {
-  loginUser,
-  clearAuthErrors
-} from '../../actions/userActions';
+import { loginUser, clearAuthErrors } from "../../actions/userActions";
 import "./login.scss";
 import Input from "../ui-components/Input";
 import Button from "../ui-components/Button";
@@ -144,4 +141,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { loginUser, clearAuthErrors })(Login);
+export default connect(
+  mapStateToProps,
+  { loginUser, clearAuthErrors }
+)(Login);

@@ -38,6 +38,8 @@
   "dependencies": {
     "@material-ui/core": "^4.4.2",
     "axios": "^0.19.0",
+    "glamor": ">=2",
+    "glamorous": "^5.0.0",
     "history": "^4.10.1",
     "jwt-decode": "^2.2.0",
     "moment": "^2.24.0",
