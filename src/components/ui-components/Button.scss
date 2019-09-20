@@ -1,0 +1,26 @@
+@import "../../styles/variables";
+
+.button {
+  button {
+    &.khd-raisedPrimary {
+      font-weight: $fontWeightRegular;
+      padding-top: 11px;
+    }
+
+    &.khd-raisedSecondary {
+    }
+
+    &.khd-flatPrimary {
+    }
+
+    &.khd-flatSecondary {
+      background-color: $colorWhite;
+      color: $colorFont;
+      font-weight: $fontWeightRegular;
+
+      &:hover {
+        background-color: $colorBlack5;
+      }
+    }
+  }
+}
