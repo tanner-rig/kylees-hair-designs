@@ -9,28 +9,83 @@ import {
   Radio,
   RadioGroup,
   TextField,
-  useMediaQuery
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Select,
+  MenuItem
 } from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker
+} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
-// import Loader from "../ui-components/Loader";
+import { convertToUnix, convertToDateStamp } from '../../utils/dateUtil';
+import Loader from "../ui-components/Loader";
 import { createClient } from "../../actions/clientsActions";
-import "./clientModal.scss";
+import v from "../../styles/variables";
+
+const dialogTitleStyle = {
+  borderBottom: `1px solid ${v.colorBlack15}`
+};
 
 class ClientModal extends Component {
-  handleClientSubmit = client => {
-    this.setState({ savingClient: true });
-    createClient(client)
-      .then(() => {
-        this.setState({ clientModalOpen: false, savingClient: false });
-      })
-      .catch(err => {
-        this.setState({
-          clientModalOpen: false,
-          savingClient: false,
-          newClientError: err
-        });
+  state = {
+    client: {
+      firstName: "",
+      lastName: "",
+      waiver: false,
+      phone: "",
+      contactMethod: "",
+      instagram: "",
+      hairHistory: "",
+      email: "",
+      dob: Date.now(),
+      allergies: "",
+      venmo: "",
+      notes: ""
+    }
+  };
+
+  componentDidMount() {
+    if (this.props.client) {
+      this.setState({
+        client: this.props.client
       });
+    }
+  }
+
+  handleClientSubmit = () => {
+    this.setState({ savingClient: true });
+
+    if (this.state.client.firstName) {
+      createClient(this.state.client)
+        .then(() => {
+          this.setState({ clientModalOpen: false, savingClient: false });
+        })
+        .catch(err => {
+          this.setState({
+            clientModalOpen: false,
+            savingClient: false,
+            newClientError: err
+          });
+        });
+    } else {
+      console.error('need a first name');
+    }
+  };
+
+  onInputTextChange = (key, value) => {
+    this.setState(prevState => {
+      return {
+        client: {
+          ...prevState.client,
+          [key]: value,
+          [`${key}Error`]: ""
+        }
+      };
+    });
   };
 
   render() {
@@ -39,108 +94,198 @@ class ClientModal extends Component {
 
     return (
       <div className="client-modal">
-        {!client ? (
-          <Dialog
-            open={open}
-            onClose={closeModal}
-            aria-labelledby="responsive-dialog-title"
-          >
-            <DialogTitle id="responsive-dialog-title">
+        {savingClient && <Loader />}
+        <Dialog
+          open={open}
+          onClose={closeModal}
+          aria-labelledby="responsive-dialog-title"
+          fullScreen={
+            typeof window.orientation !== "undefined" ||
+            navigator.userAgent.indexOf("IEMobile") !== -1
+          }
+          fullWidth
+        >
+          {!client ? (
+            <DialogTitle style={dialogTitleStyle} id="responsive-dialog-title">
               Add a new client
             </DialogTitle>
-            {savingClient && (
-              <div>
-                <DialogContent>
+          ) : (
+            <DialogTitle style={dialogTitleStyle} id="responsive-dialog-title">
+              Update {`${client.firstName} ${client.lastName}`}
+            </DialogTitle>
+          )}
+          {!savingClient && (
+            <div>
+              <DialogContent style={{ paddingTop: 0 }}>
+                <FormControl fullWidth>
                   <TextField
                     autoFocus
-                    margin="dense"
-                    id="name"
-                    label="Email Address"
-                    type="email"
-                    fullWidth
+                    margin="normal"
+                    id="firstName"
+                    label="First name"
+                    type="firstName"
+                    value={this.state.client.firstName}
+                    onChange={e =>
+                      this.onInputTextChange("firstName", e.target.value)
+                    }
                   />
                   <TextField
-                    autoFocus
-                    margin="dense"
-                    id="name"
-                    label="Email Address"
-                    type="email"
-                    fullWidth
+                    margin="normal"
+                    id="lastName"
+                    label="Last name"
+                    type="lastName"
+                    value={this.state.client.lastName}
+                    onChange={e =>
+                      this.onInputTextChange("lastName", e.target.value)
+                    }
                   />
+                  <TextField
+                    margin="normal"
+                    id="phone"
+                    label="Phone"
+                    type="phone"
+                    value={this.state.client.phone}
+                    onChange={e =>
+                      this.onInputTextChange("phone", e.target.value)
+                    }
+                  />
+                  <TextField
+                    margin="normal"
+                    id="email"
+                    label="Email"
+                    type="email"
+                    value={this.state.client.email}
+                    onChange={e =>
+                      this.onInputTextChange("email", e.target.value)
+                    }
+                  />
+
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <KeyboardDatePicker
+                      // disableToolbar
+                      variant="inline"
+                      format="MM/dd/yyyy"
+                      margin="normal"
+                      id="dob"
+                      label="Birth date"
+                      value={this.state.client.dob}
+                      onChange={date => this.onInputTextChange("dob", convertToUnix(date))}
+                      KeyboardButtonProps={{
+                        "aria-label": "change date"
+                      }}
+                    />
+                  </MuiPickersUtilsProvider>
+                  <FormLabel style={{ marginTop: "16px" }}>
+                    Preferred contact method
+                  </FormLabel>
+                  <Select
+                    value={this.state.client.contactMethod}
+                    onChange={e =>
+                      this.onInputTextChange("contactMethod", e.target.value)
+                    }
+                    inputProps={{
+                      name: "contactMethod",
+                      id: "contact-method"
+                    }}
+                  >
+                    <MenuItem value="text">Text</MenuItem>
+                    <MenuItem value="call">Call</MenuItem>
+                    <MenuItem value="email">Email</MenuItem>
+                  </Select>
+                  <TextField
+                    margin="normal"
+                    id="instagram"
+                    label="Instagram handle"
+                    type="instagram"
+                    value={this.state.client.instagram}
+                    onChange={e =>
+                      this.onInputTextChange("instagram", e.target.value)
+                    }
+                  />
+
+                  <TextField
+                    margin="normal"
+                    id="allergies"
+                    label="Allergies"
+                    type="allergies"
+                    value={this.state.client.allergies}
+                    onChange={e =>
+                      this.onInputTextChange("allergies", e.target.value)
+                    }
+                  />
+                  <TextField
+                    margin="normal"
+                    id="venmo"
+                    label="Venmo"
+                    type="venmo"
+                    value={this.state.client.venmo}
+                    onChange={e =>
+                      this.onInputTextChange("venmo", e.target.value)
+                    }
+                  />
+                  <FormLabel style={{ marginTop: "16px" }}>
+                    Waiver signed
+                  </FormLabel>
                   <RadioGroup
                     aria-label="waiver"
                     name="waiver"
-                    // value={value}
-                    // onChange={handleChange}
+                    value={this.state.client.waiver}
+                    onChange={e =>
+                      this.onInputTextChange("waiver", e.target.value)
+                    }
                     row
                   >
                     <FormControlLabel
-                      value="top"
+                      value={true}
                       control={<Radio color="primary" />}
-                      label="Top"
-                      labelPlacement="top"
+                      label="Yes"
+                      labelPlacement="start"
                     />
                     <FormControlLabel
-                      value="start"
+                      value={false}
                       control={<Radio color="primary" />}
-                      label="Start"
+                      label="No"
                       labelPlacement="start"
                     />
                   </RadioGroup>
-                </DialogContent>
-                <DialogActions>
-                  <Button
-                    onClick={this.handleClientSubmit}
-                    color="primary"
-                    autoFocus
-                  >
-                    Submit
-                  </Button>
-                  <Button onClick={this.handleOpenClientModal} color="primary">
-                    Cancel
-                  </Button>
-                </DialogActions>
-              </div>
-            )}
-          </Dialog>
-        ) : (
-          <Dialog
-            fullScreen={fullScreen}
-            open={open}
-            onClose={closeModal}
-            aria-labelledby="responsive-dialog-title"
-          >
-            <DialogTitle id="responsive-dialog-title">
-              Update {`${client.firstName} ${client.lastName}`}
-            </DialogTitle>
-            {savingClient && (
-              <div>
-                <DialogContent>
                   <TextField
-                    autoFocus
-                    margin="dense"
-                    id="name"
-                    label="Email Address"
-                    type="email"
-                    fullWidth
+                    margin="normal"
+                    id="hairHistory"
+                    label="Hair history"
+                    type="hairHistory"
+                    multiline
+                    value={this.state.client.hairHistory}
+                    onChange={e =>
+                      this.onInputTextChange("hairHistory", e.target.value)
+                    }
                   />
-                </DialogContent>
-                <DialogActions>
-                  <Button
-                    onClick={this.handleClientSubmit}
-                    color="primary"
-                    autoFocus
-                  >
-                    Submit
-                  </Button>
-                  <Button onClick={this.handleOpenClientModal} color="primary">
-                    Cancel
-                  </Button>
-                </DialogActions>
-              </div>
-            )}
-          </Dialog>
-        )}
+                  <TextField
+                    id="notes"
+                    label="Notes"
+                    multiline
+                    value={this.state.client.notes}
+                    onChange={e =>
+                      this.onInputTextChange("notes", e.target.value)
+                    }
+                    margin="normal"
+                  />
+                </FormControl>
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  onClick={this.handleClientSubmit}
+                  color="primary"
+                  autoFocus
+                >
+                  Submit
+                </Button>
+                <Button onClick={closeModal} color="primary">
+                  Close
+                </Button>
+              </DialogActions>
+            </div>
+          )}
+        </Dialog>
       </div>
     );
   }

@@ -14,11 +14,11 @@ class AdminDashboard extends Component {
   };
 
   handleCloseClientModal = () => {
-    this.setState({ clientModalOpen: true });
+    this.setState({ clientModalOpen: false });
   };
 
   handleOpenClientModal = () => {
-    this.setState({ clientModalOpen: false });
+    this.setState({ clientModalOpen: true });
   };
 
   render() {

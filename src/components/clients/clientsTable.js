@@ -7,7 +7,6 @@ class ClientsTable extends Component {
   render() {
     const { clients } = this.props;
 
-    console.log((typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1));
 
     return (
       <div className="clients">
