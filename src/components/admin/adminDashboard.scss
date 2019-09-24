@@ -1,35 +1,20 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+@import "../../styles/variables";
 
-import { getClients } from "../../actions/clientsActions";
-// import ClientsTable from "../ui-components/Table";
+.admin-dashboard {
+  padding: 16px;
+  font-size: $fontSizeBase;
 
-class AdminDashboard extends Component {
-  render() {
-    const { clients } = this.props;
+  .add-client {
+    align-items: center;
+    cursor: pointer;
+    display: inline-flex;
+    margin-top: 8px;
 
-    // console.log((typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1));
-
-    return (
-      <div className="admin-dashboard">
-        {clients.length > 0 ? (
-          // <ClientsTable clients={clients} />
-          <div/>
-        ) : (
-          <div>No clients yet, click to add</div>
-        )}
-      </div>
-    );
+    svg {
+      margin-left: 8px;
+      color: $colorPrimary;
+      font-size: 32px;
+      transition: color $transitionTime;
+    }
   }
 }
-
-function mapStateToProps(state) {
-  return {
-    clients: state.clients.clientsList
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  { getClients }
-)(AdminDashboard);

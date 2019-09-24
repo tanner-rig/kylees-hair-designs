@@ -11,11 +11,13 @@ class ClientsTable extends Component {
 
     return (
       <div className="clients">
-        {clients.length > 0 ? (
-          <div/>
-        ) : (
-          <div>No clients yet, click to add</div>
-        )}
+        {clients.map(client => {
+          return (
+            <div style={{ border: '1px solid black'}}>
+              {client.firstName}
+            </div>
+          );
+        })}
       </div>
     );
   }
@@ -30,4 +32,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   { getClients }
-)(AdminDashboard);
+)(ClientsTable);
