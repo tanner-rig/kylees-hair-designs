@@ -21,7 +21,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
-import { convertToUnix, convertToDateStamp } from '../../utils/dateUtil';
+import { convertToUnix } from '../../utils/dateUtil';
 import Loader from "../ui-components/Loader";
 import { createClient } from "../../actions/clientsActions";
 import v from "../../styles/variables";
@@ -60,7 +60,7 @@ class ClientModal extends Component {
     this.setState({ savingClient: true });
 
     if (this.state.client.firstName) {
-      createClient(this.state.client)
+      this.props.createClient(this.state.client)
         .then(() => {
           this.setState({ clientModalOpen: false, savingClient: false });
         })

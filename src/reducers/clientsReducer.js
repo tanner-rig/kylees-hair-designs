@@ -12,40 +12,32 @@ const initialState = {
       clientId: "1234",
       firstName: "Tanner",
       lastName: "Rigby",
-      waiver: "yes",
+      waiver: true,
       phone: "80134343434",
       contactMethod: "text",
-      fb: "",
-      ig: "",
-      sc: "",
-      personalBackground: "",
+      instagram: "@kyleehair",
       hairHistory: "some damaged hair",
       email: "afd@dfds.com",
       dob: "",
       allergies: "none",
-      preferredPayment: "",
-      notes: "",
+      notes: "This chick is coooooooooool",
       clientStatus: "active",
       createdAt: "",
       updatedAt: ""
     },
     {
-      clientId: "1234",
+      clientId: "1235",
       firstName: "Tanner",
       lastName: "Rigby",
-      waiver: "yes",
+      waiver: false,
       phone: "80134343434",
       contactMethod: "text",
-      fb: "",
-      ig: "",
-      sc: "",
-      personalBackground: "",
+      instagram: "@hellooperator",
       hairHistory: "some damaged hair",
       email: "afd@dfds.com",
       dob: "",
       allergies: "none",
-      preferredPayment: "",
-      notes: "",
+      notes: "lkjsdflkjsdflkjsfl ksjflskdjfslkfjslf skfjs f sdfksjdf sfls k sdf ksflsj ",
       clientStatus: "active",
       createdAt: "",
       updatedAt: ""
@@ -74,6 +66,7 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
   case CREATE_CLIENT:
+    console.log('action: ', action)
     return {
       ...state,
       clientsList: [...state.clientsList, action.payload]

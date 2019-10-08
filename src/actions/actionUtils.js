@@ -4,7 +4,7 @@ export const getOptions = () => {
   return {
     headers: {
       "Content-Type": "application/json",
-      Authorization: token
+      Authorization: `Bearer ${token}`
     }
   };
 };

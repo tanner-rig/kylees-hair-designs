@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import { API_URL } from "../constants/env";
-import { getOptions } from './actionUtils';
+import { getOptions } from "./actionUtils";
 import {
   CREATE_CLIENT,
   DELETE_CLIENT,
@@ -11,18 +11,25 @@ import {
 
 export function createClient(body) {
   return dispatch => {
-    const options = getOptions();
+    return new Promise((resolve, reject) => {
+      const options = getOptions();
 
-    axios.post(`${API_URL}/clients`, body, options)
-      .then(response => {
-        const client = response.data.client;
+      console.log("HEY: ", body, options);
 
-        // create client in Redux state
-        dispatch({ type: CREATE_CLIENT, payload: client });
-      })
-      .catch(err => {
-        console.error("error getting clients: ", err.response);
-      });
+      axios.post(`${API_URL}/clients`, body, options)
+        .then(response => {
+          const client = response.data;
+
+          // create client in Redux state
+          dispatch({ type: CREATE_CLIENT, payload: client });
+
+          resolve();
+        })
+        .catch(err => {
+          console.error("error getting clients: ", err);
+          reject(err);
+        });
+    });
   };
 }
 
@@ -64,7 +71,7 @@ export function updateClient(body) {
 
     axios.put(`${API_URL}/clients/${body.clientId}`, body, options)
       .then(response => {
-        const client = response.data.client;
+        const client = response.data;
 
         // Update client in Redux state
         dispatch({ type: UPDATE_CLIENT, payload: client });

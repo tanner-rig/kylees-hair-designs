@@ -1,5 +1,6 @@
 module.exports = {
   home: '/',
   dashboard: '/admin',
-  login: '/login'
+  login: '/login',
+  client: '/client'
 };

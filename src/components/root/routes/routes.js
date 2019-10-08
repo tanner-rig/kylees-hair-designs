@@ -7,7 +7,7 @@ import AdminDashboard from "../../admin/adminDashboard";
 import Login from "../../auth/login";
 import RequireAuth from "./requireAuth";
 import TopBar from '../../top-bar/TopBar';
-import Footer from '../../footer/footer';
+import Client from '../../clients/client';
 import routes from "../../../constants/routes";
 
 const history = createBrowserHistory();
@@ -22,6 +22,10 @@ export default class Routes extends Component {
           <Route
             path={routes.dashboard}
             component={RequireAuth(AdminDashboard)}
+          />
+          <Route
+            path={routes.client}
+            component={RequireAuth(Client)}
           />
           <Route path={routes.login} component={Login} />
         </Switch>

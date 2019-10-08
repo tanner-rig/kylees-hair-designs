@@ -13,6 +13,10 @@ class AdminDashboard extends Component {
     clientModalOpen: false
   };
 
+  // componentDidMount() {
+  //   this.props.getClients();
+  // }
+
   handleCloseClientModal = () => {
     this.setState({ clientModalOpen: false });
   };
@@ -26,8 +30,10 @@ class AdminDashboard extends Component {
 
     return (
       <div className="admin-dashboard">
-        <div className="add-client" onClick={this.handleOpenClientModal}>
-          Add client <MdPersonAdd />
+        <div className="admin-actions">
+          <div className="add-client" onClick={this.handleOpenClientModal}>
+            Add client <MdPersonAdd />
+          </div>
         </div>
         <ClientModal
           open={this.state.clientModalOpen}
