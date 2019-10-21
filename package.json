@@ -4,8 +4,9 @@
   "description": "Business website for Kylees Hair Designs",
   "main": "index.js",
   "scripts": {
-    "build": "parcel build index.html --out-dir build",
-    "start": "STAGE=development parcel index.html --out-dir build --open",
+    "build-dev": "NODE_ENV=development parcel build index.html --out-dir build",
+    "build-prod": "NODE_ENV=production parcel build index.html --out-dir build",
+    "start": "NODE_ENV=development parcel index.html --out-dir build --open",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { API_URL } from "../constants/env";
+import { API_URL } from "../constants";
 import { getOptions } from "./actionUtils";
 import {
   CREATE_CLIENT,
