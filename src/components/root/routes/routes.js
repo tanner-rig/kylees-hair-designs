@@ -16,7 +16,7 @@ export default class Routes extends Component {
   render() {
     return (
       <Router history={history}>
-        <TopBar />
+        <TopBar history={history} />
         <Switch>
           <Route path={routes.home} exact component={Home} />
           <Route

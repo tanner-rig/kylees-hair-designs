@@ -14,7 +14,7 @@ class TopBar extends Component {
   }
 
   onTitleClick = () => {
-    this.props.history.push(routes.landingPage);
+    this.props.history.push(routes.home);
   }
 
   render() {
