@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import "./home.scss";
 
-import InstagramIcon from "../../../assets/IG_Glyph_fill.png";
+import InstagramIcon from "./ig.png";
 
 export default class Home extends Component {
   render() {
