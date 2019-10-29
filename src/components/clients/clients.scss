@@ -1,9 +1,10 @@
 @import "../../styles/variables";
 
-.admin-dashboard {
+.clients-dashboard {
   padding: 16px;
   font-size: $fontSizeBase;
-  .admin-actions {
+  
+  .clients-actions {
     display: flex;
     width: 100%;
     justify-content: flex-end;

@@ -41,11 +41,11 @@ export function deleteAppointment(appointmentId) {
   };
 }
 
-export function getAppointments() {
+export function getAppointments(clientId) {
   return dispatch => {
     const options = getOptions();
 
-    axios.get(`${API_URL}/appointments`, options)
+    axios.get(`${API_URL}/appointments?clientId=${clientId}`, options)
       .then(response => {
         const appointments = response.data.appointments;
 

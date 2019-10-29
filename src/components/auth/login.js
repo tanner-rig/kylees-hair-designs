@@ -21,13 +21,13 @@ class Login extends Component {
   componentDidMount() {
     this.props.clearAuthErrors();
     if (this.props.userToken && !isExpired(this.props.userToken)) {
-      this.props.history.push(routes.dashboard);
+      this.props.history.push(routes.clients);
     }
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.userToken !== this.props.userToken) {
-      this.props.history.push(routes.dashboard);
+      this.props.history.push(routes.clients);
     }
 
     if (!prevProps.authError && this.props.authError) {

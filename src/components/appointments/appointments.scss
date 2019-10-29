@@ -1,0 +1,26 @@
+@import "../../styles/variables";
+
+.appointments {
+  padding: 16px;
+  font-size: $fontSizeBase;
+
+  .appointments-actions {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+
+    .add-appointment {
+      align-items: center;
+      cursor: pointer;
+      display: inline-flex;
+      margin-right: 32px;
+
+      svg {
+        margin-left: 8px;
+        color: $colorPrimary;
+        font-size: 32px;
+        transition: color $transitionTime;
+      }
+    }
+  }
+}

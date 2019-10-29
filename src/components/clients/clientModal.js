@@ -21,9 +21,9 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
-import { convertToUnix } from '../../utils/dateUtil';
+import { convertToUnix } from "../../utils/dateUtil";
 import Loader from "../ui-components/Loader";
-import { createClient } from "../../actions/clientsActions";
+import { createClient, updateClient } from "../../actions/clientsActions";
 import v from "../../styles/variables";
 
 const dialogTitleStyle = {
@@ -58,21 +58,32 @@ class ClientModal extends Component {
 
   handleClientSubmit = () => {
     this.setState({ savingClient: true });
-
-    if (this.state.client.firstName) {
-      this.props.createClient(this.state.client)
+    if (this.props.client) {
+      this.props
+        .updateClient(this.state.client)
         .then(() => {
-          this.setState({ clientModalOpen: false, savingClient: false });
+          this.setState({ savingClient: false });
         })
         .catch(err => {
           this.setState({
-            clientModalOpen: false,
+            savingClient: false,
+            newClientError: err
+          });
+        });
+    } else if (this.state.client.firstName) {
+      this.props
+        .createClient(this.state.client)
+        .then(() => {
+          this.setState({ savingClient: false });
+        })
+        .catch(err => {
+          this.setState({
             savingClient: false,
             newClientError: err
           });
         });
     } else {
-      console.error('need a first name');
+      console.error("need a first name");
     }
   };
 
@@ -123,7 +134,6 @@ class ClientModal extends Component {
                     margin="normal"
                     id="firstName"
                     label="First name"
-                    type="firstName"
                     value={this.state.client.firstName}
                     onChange={e =>
                       this.onInputTextChange("firstName", e.target.value)
@@ -133,7 +143,6 @@ class ClientModal extends Component {
                     margin="normal"
                     id="lastName"
                     label="Last name"
-                    type="lastName"
                     value={this.state.client.lastName}
                     onChange={e =>
                       this.onInputTextChange("lastName", e.target.value)
@@ -143,7 +152,6 @@ class ClientModal extends Component {
                     margin="normal"
                     id="phone"
                     label="Phone"
-                    type="phone"
                     value={this.state.client.phone}
                     onChange={e =>
                       this.onInputTextChange("phone", e.target.value)
@@ -169,7 +177,9 @@ class ClientModal extends Component {
                       id="dob"
                       label="Birth date"
                       value={this.state.client.dob}
-                      onChange={date => this.onInputTextChange("dob", convertToUnix(date))}
+                      onChange={date =>
+                        this.onInputTextChange("dob", convertToUnix(date))
+                      }
                       KeyboardButtonProps={{
                         "aria-label": "change date"
                       }}
@@ -196,7 +206,6 @@ class ClientModal extends Component {
                     margin="normal"
                     id="instagram"
                     label="Instagram handle"
-                    type="instagram"
                     value={this.state.client.instagram}
                     onChange={e =>
                       this.onInputTextChange("instagram", e.target.value)
@@ -207,7 +216,6 @@ class ClientModal extends Component {
                     margin="normal"
                     id="allergies"
                     label="Allergies"
-                    type="allergies"
                     value={this.state.client.allergies}
                     onChange={e =>
                       this.onInputTextChange("allergies", e.target.value)
@@ -217,7 +225,6 @@ class ClientModal extends Component {
                     margin="normal"
                     id="venmo"
                     label="Venmo"
-                    type="venmo"
                     value={this.state.client.venmo}
                     onChange={e =>
                       this.onInputTextChange("venmo", e.target.value)
@@ -252,7 +259,6 @@ class ClientModal extends Component {
                     margin="normal"
                     id="hairHistory"
                     label="Hair history"
-                    type="hairHistory"
                     multiline
                     value={this.state.client.hairHistory}
                     onChange={e =>
@@ -299,5 +305,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { createClient }
+  { createClient, updateClient }
 )(ClientModal);

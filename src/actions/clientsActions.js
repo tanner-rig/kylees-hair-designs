@@ -14,8 +14,6 @@ export function createClient(body) {
     return new Promise((resolve, reject) => {
       const options = getOptions();
 
-      console.log("HEY: ", body, options);
-
       axios.post(`${API_URL}/clients`, body, options)
         .then(response => {
           const client = response.data;

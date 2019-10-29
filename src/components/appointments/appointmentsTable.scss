@@ -1,49 +1,53 @@
 @import "../../styles/variables";
 
-.clients {
+.appointments {
   margin-top: 40px;
 
-  .clients-header {
+  .appointments-header {
     display: flex;
     width: 100%;
     border-bottom: 1px solid $colorBlack15;
     height: 40px;
     font-weight: bold;
 
-    .ch-name {
-      width: 15%;
-    }
-
-    .ch-phone {
-      width: 15%;
-    }
-
-    .ch-email {
-      width: 15%;
-    }
-
-    .ch-contact {
+    .ah-actions {
       width: 5%;
     }
 
-    .ch-allergies {
+    .ah-status {
+      width: 15%;
+    }
+
+    .ah-date {
+      width: 15%;
+    }
+
+    .ah-time {
+      width: 15%;
+    }
+
+    .ah-service {
       width: 10%;
     }
 
-    .ch-waiver {
+    .ah-amount {
       width: 5%;
     }
 
-    .ch-history {
-      width: 15%;
+    .ah-discount {
+      width: 5%;
     }
 
-    .ch-notes {
-      width: 20%;
+    .ah-tip {
+      width: 5%;
+    }
+
+    .ah-notes {
+      width: 25%;
     }
   }
 
-  .client-row {
+  .appointment-row {
     display: flex;
     width: 100%;
     height: 32px;
@@ -59,36 +63,40 @@
       background-color: $colorBlack15;
     }
 
-    .client-name {
-      width: 15%;
-    }
-
-    .client-phone {
-      width: 15%;
-    }
-
-    .client-email {
-      width: 15%;
-    }
-
-    .client-contact {
+    .appointment-actions {
       width: 5%;
     }
 
-    .client-allergies {
+    .appointment-status {
+      width: 15%;
+    }
+
+    .appointment-date {
+      width: 15%;
+    }
+
+    .appointment-time {
+      width: 15%;
+    }
+
+    .appointment-service {
       width: 10%;
     }
 
-    .client-waiver {
+    .appointment-amount {
       width: 5%;
     }
 
-    .client-history {
-      width: 15%;
+    .appointment-discount {
+      width: 5%;
     }
 
-    .client-notes {
-      width: 20%;
+    .appointment-tip {
+      width: 5%;
+    }
+
+    .appointment-notes {
+      width: 25%;
     }
   }
 }
