@@ -31,53 +31,75 @@ const dialogTitleStyle = {
 };
 
 class AppointmentModal extends Component {
+  defaultAppt = {
+    amountPaid: "",
+    apptStatus: "",
+    clientId: this.props.clientId,
+    date: Date.now(),
+    discountAmount: "",
+    discountType: "",
+    duration: "",
+    followUpDate: Date.now(),
+    followUpTime: "",
+    location: "",
+    milesDriven: "",
+    notes: "",
+    productUsed: "",
+    retailItemsAmount: "",
+    retailItemsSold: "",
+    service: "",
+    time: "",
+    tip: "",
+    savingAppointment: false
+  }
+
   state = {
-    appointment: {
-      amountPaid: "",
-      apptStatus: "",
-      clientId: this.props.clientId,
-      date: Date.now(),
-      discountAmount: "",
-      discountType: "",
-      duration: "",
-      followUpDate: Date.now(),
-      followUpTime: "",
-      location: "",
-      milesDriven: "",
-      notes: "",
-      productUsed: "",
-      retailItemsAmount: "",
-      retailItemsSold: "",
-      service: "",
-      time: "",
-      tip: "",
-      savingAppointment: false
-    }
+    appointment: this.defaultAppt
   };
 
   componentDidMount() {
     if (this.props.appointment) {
       this.setState({
-        appointment: this.props.appointment
+        appointment: {
+          ...this.props.appointment,
+          clientId: this.props.clientId
+        }
       });
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.clientId !== this.props.clientId) {
+      this.setState({
+        appointment: {
+          ...this.state.appointment,
+          clientId: this.props.clientId
+        }
+      });
+
+      this.defaultAppt.clientId = this.props.clientId;
     }
   }
 
   handleAppointmentSubmit = () => {
     this.setState({ savingAppointment: true });
 
+    this.props.closeModal();
+
     if (this.props.appointment) {
       this.props
         .updateAppointment(this.state.appointment)
         .then(() => {
           this.setState({
-            savingAppointment: false
+            savingAppointment: false,
+            appointment: this.defaultAppt
           });
         })
         .catch(err => {
           this.setState({
             savingAppointment: false,
-            newAppointmentError: err
+            newAppointmentError: err,
+            appointment: this.defaultAppt
           });
         });
     } else if (this.state.appointment.apptStatus) {
@@ -85,13 +107,15 @@ class AppointmentModal extends Component {
         .createAppointment(this.state.appointment)
         .then(() => {
           this.setState({
-            savingAppointment: false
+            savingAppointment: false,
+            appointment: this.defaultAppt
           });
         })
         .catch(err => {
           this.setState({
             savingAppointment: false,
-            newAppointmentError: err
+            newAppointmentError: err,
+            appointment: this.defaultAppt
           });
         });
     } else {
@@ -356,7 +380,10 @@ class AppointmentModal extends Component {
                 >
                   Submit
                 </Button>
-                <Button onClick={closeModal} color="primary">
+                <Button onClick={() => {
+                  this.setState({ appointment: this.defaultAppt });
+                  closeModal();
+                }} color="primary">
                   Close
                 </Button>
               </DialogActions>

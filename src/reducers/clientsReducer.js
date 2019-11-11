@@ -38,7 +38,7 @@ export default function(state = initialState, action) {
   case DELETE_CLIENT:
     return {
       clientsList: remove(clone(state.clientsList), client => {
-        return client.clientId === action.payload;
+        return client.clientId !== action.payload;
       }),
       currentClient: initialState.currentClient
     };

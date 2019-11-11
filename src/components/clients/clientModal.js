@@ -58,6 +58,9 @@ class ClientModal extends Component {
 
   handleClientSubmit = () => {
     this.setState({ savingClient: true });
+
+    this.props.closeModal();
+
     if (this.props.client) {
       this.props
         .updateClient(this.state.client)

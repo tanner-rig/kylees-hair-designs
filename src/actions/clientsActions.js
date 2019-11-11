@@ -48,18 +48,22 @@ export function deleteClient(clientId) {
 
 export function getClients() {
   return dispatch => {
-    const options = getOptions();
+    return new Promise((resolve, reject) => {
+      const options = getOptions();
 
-    axios.get(`${API_URL}/clients`, options)
-      .then(response => {
-        const clients = response.data.clients;
+      axios.get(`${API_URL}/clients`, options)
+        .then(response => {
+          const clients = response.data.clients;
 
-        // Add clients to redux
-        dispatch({ type: GET_CLIENTS, payload: clients });
-      })
-      .catch(err => {
-        console.error("error getting clients: ", err.response);
-      });
+          // Add clients to redux
+          dispatch({ type: GET_CLIENTS, payload: clients });
+          resolve();
+        })
+        .catch(err => {
+          console.error("error getting clients: ", err.response);
+          reject(err);
+        });
+    });
   };
 }
 

@@ -1,6 +1,6 @@
 @import "../../styles/variables";
 
-.appointments {
+.appointments-table {
   margin-top: 40px;
 
   .appointments-header {
@@ -49,54 +49,75 @@
 
   .appointment-row {
     display: flex;
-    width: 100%;
-    height: 32px;
-    align-items: center;
-    text-decoration: none;
-    color: inherit;
 
     &:nth-child(odd) {
       background-color: $colorBlack5;
     }
 
-    &:hover {
-      background-color: $colorBlack15;
-    }
-
     .appointment-actions {
-      width: 5%;
+      display: flex;
+      align-items: center;
+      padding: 8px;
+      background-color: $colorWhite;
+
+      .row-actions {
+        padding: 0 8px;
+        cursor: pointer;
+        color: $colorPrimary;
+
+        &:hover {
+          color: $colorPrimaryLight;
+        }
+      }
     }
 
-    .appointment-status {
-      width: 15%;
-    }
+    .appointment-data {
+      display: flex;
+      width: 100%;
+      height: 32px;
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
 
-    .appointment-date {
-      width: 15%;
-    }
+      &:hover {
+        background-color: $colorBlack15;
+      }
 
-    .appointment-time {
-      width: 15%;
-    }
+      .appointment-actions {
+        width: 5%;
+      }
 
-    .appointment-service {
-      width: 10%;
-    }
+      .appointment-status {
+        width: 15%;
+      }
 
-    .appointment-amount {
-      width: 5%;
-    }
+      .appointment-date {
+        width: 15%;
+      }
 
-    .appointment-discount {
-      width: 5%;
-    }
+      .appointment-time {
+        width: 15%;
+      }
 
-    .appointment-tip {
-      width: 5%;
-    }
+      .appointment-service {
+        width: 10%;
+      }
 
-    .appointment-notes {
-      width: 25%;
+      .appointment-amount {
+        width: 5%;
+      }
+
+      .appointment-discount {
+        width: 5%;
+      }
+
+      .appointment-tip {
+        width: 5%;
+      }
+
+      .appointment-notes {
+        width: 25%;
+      }
     }
   }
 }

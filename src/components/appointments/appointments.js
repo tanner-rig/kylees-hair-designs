@@ -8,14 +8,16 @@ import {
   getAppointments,
   deleteAppointment
 } from "../../actions/appointmentsActions";
+import Loader from "../ui-components/Loader";
 
 import "./appointments.scss";
 
-class Client extends Component {
+class Appointments extends Component {
   state = {
     appointmentModalOpen: false,
     clientId: "",
-    currentAppt: null
+    currentAppt: null,
+    loading: true
   };
 
   componentDidMount() {
@@ -25,7 +27,11 @@ class Client extends Component {
     this.setState({ clientId });
 
     if (clientId) {
-      this.props.getAppointments(clientId);
+      this.props.getAppointments(clientId).then(() => {
+        this.setState({ loading: false });
+      });
+    } else {
+      this.setState({ loading: false });
     }
   }
 
@@ -47,37 +53,36 @@ class Client extends Component {
 
   render() {
     const { appointments } = this.props;
-    // back button
-    // edit client
-    // appointments
-    // edit appointment
     return (
       <div className="appointments">
         <div className="appointments-actions">
+          <div className="back-button" onClick={this.props.history.goBack}>
+            {"< Back"}
+          </div>
           <div
             className="add-appointment"
             onClick={this.handleOpenAppointmentModal}
           >
             Add appointment <MdNoteAdd />
           </div>
-          <AppointmentModal
-            open={this.state.appointmentModalOpen}
-            closeModal={this.handleCloseAppointmentModal}
-            clientId={this.state.clientId}
-            appointment={this.state.currentAppt}
-          />
-          {appointments.length > 0 ? (
-            <AppointmentsTable
-              appointments={appointments}
-              editAppointment={this.editAppointment}
-              deleteAppointment={this.deleteAppointment}
-            />
-          ) : (
-            <div>
-              No appointments for this client yet, add a new appointment
-            </div>
-          )}
         </div>
+        <AppointmentModal
+          open={this.state.appointmentModalOpen}
+          closeModal={this.handleCloseAppointmentModal}
+          clientId={this.state.clientId}
+          appointment={this.state.currentAppt}
+        />
+        {this.state.loading ? (
+          <Loader size={80} />
+        ) : appointments.length > 0 ? (
+          <AppointmentsTable
+            appointments={appointments}
+            editAppointment={this.editAppointment}
+            deleteAppointment={this.deleteAppointment}
+          />
+        ) : (
+          <div>No appointments for this client yet, add a new appointment</div>
+        )}
       </div>
     );
   }
@@ -92,4 +97,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   { getAppointments, deleteAppointment }
-)(Client);
+)(Appointments);

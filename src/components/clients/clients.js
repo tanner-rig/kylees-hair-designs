@@ -5,17 +5,21 @@ import { MdPersonAdd } from "react-icons/md";
 import { getClients, deleteClient } from "../../actions/clientsActions";
 import { ClientsTable } from "./clientsTable";
 import ClientModal from "./clientModal";
+import Loader from "../ui-components/Loader";
 
 import "./clients.scss";
 
 class Clients extends Component {
   state = {
     clientModalOpen: false,
-    currentClient: null
+    currentClient: null,
+    loading: true
   };
 
   componentDidMount() {
-    this.props.getClients();
+    this.props.getClients().then(() => {
+      this.setState({ loading: false });
+    });
   }
 
   editClient = currentClient => {
@@ -49,7 +53,9 @@ class Clients extends Component {
           closeModal={this.handleCloseClientModal}
           client={this.state.currentClient}
         />
-        {clients.length > 0 ? (
+        {this.state.loading ? (
+          <Loader size={80} />
+        ) : clients.length > 0 ? (
           <ClientsTable
             clients={clients}
             editClient={this.editClient}
