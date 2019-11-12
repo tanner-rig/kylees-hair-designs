@@ -11,18 +11,21 @@ import {
 
 export function createAppointment(body) {
   return dispatch => {
-    const options = getOptions();
+    return new Promise((resolve, reject) => {
+      const options = getOptions();
 
-    axios.post(`${API_URL}/appointments`, body, options)
-      .then(response => {
-        const appointment = response.data.appointment;
+      axios.post(`${API_URL}/appointments`, body, options)
+        .then(res => {
+          // create appointment in Redux state
+          dispatch({ type: CREATE_APPOINTMENT, payload: res.data });
 
-        // create appointment in Redux state
-        dispatch({ type: CREATE_APPOINTMENT, payload: appointment });
-      })
-      .catch(err => {
-        console.error("error getting appointments: ", err.response);
-      });
+          resolve();
+        })
+        .catch(err => {
+          console.error("error getting appointments: ", err.response);
+          reject();
+        });
+    });
   };
 }
 
@@ -41,36 +44,47 @@ export function deleteAppointment(appointmentId) {
   };
 }
 
-export function getAppointments() {
+export function getAppointments(clientId) {
   return dispatch => {
-    const options = getOptions();
+    return new Promise((resolve, reject) => {
+      const options = getOptions();
 
-    axios.get(`${API_URL}/appointments`, options)
-      .then(response => {
-        const appointments = response.data.appointments;
+      axios.get(`${API_URL}/appointments?clientId=${clientId}`, options)
+        .then(response => {
+          const appointments = response.data.appointments;
 
-        // Add appointments to redux
-        dispatch({ type: GET_APPOINTMENTS, payload: appointments });
-      })
-      .catch(err => {
-        console.error("error getting appointments: ", err.response);
-      });
+          // Add appointments to redux
+          dispatch({ type: GET_APPOINTMENTS, payload: appointments });
+          resolve();
+        })
+        .catch(err => {
+          console.error("error getting appointments: ", err.response);
+          reject(err);
+        });
+    });
   };
 }
 
 export function updateAppointment(body) {
   return dispatch => {
-    const options = getOptions();
+    return new Promise((resolve, reject) => {
+      const options = getOptions();
 
-    axios.put(`${API_URL}/appointments/${body.appointmentId}`, body, options)
-      .then(response => {
-        const appointment = response.data.appointment;
+      axios.put(`${API_URL}/appointments/${body.appointmentId}`, body, options)
+        .then(response => {
+          const appointment = response.data.appointment;
 
-        // Update appointment in Redux state
-        dispatch({ type: UPDATE_APPOINTMENT, payload: appointment });
-      })
-      .catch(err => {
-        console.error("error getting appointments: ", err.response);
-      });
+          // Update appointment in Redux state
+          dispatch({ type: UPDATE_APPOINTMENT, payload: appointment });
+
+          resolve();
+        })
+        .catch(err => {
+          console.error("error getting appointments: ", err.response);
+
+          reject(err);
+        });
+    });
+    
   };
 }

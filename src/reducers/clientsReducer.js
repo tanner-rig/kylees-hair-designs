@@ -7,42 +7,7 @@ import {
 } from "../actions/types";
 
 const initialState = {
-  clientsList: [
-    {
-      clientId: "1234",
-      firstName: "Tanner",
-      lastName: "Rigby",
-      waiver: true,
-      phone: "80134343434",
-      contactMethod: "text",
-      instagram: "@kyleehair",
-      hairHistory: "some damaged hair",
-      email: "afd@dfds.com",
-      dob: "",
-      allergies: "none",
-      notes: "This chick is coooooooooool",
-      clientStatus: "active",
-      createdAt: "",
-      updatedAt: ""
-    },
-    {
-      clientId: "1235",
-      firstName: "Tanner",
-      lastName: "Rigby",
-      waiver: false,
-      phone: "80134343434",
-      contactMethod: "text",
-      instagram: "@hellooperator",
-      hairHistory: "some damaged hair",
-      email: "afd@dfds.com",
-      dob: "",
-      allergies: "none",
-      notes: "lkjsdflkjsdflkjsfl ksjflskdjfslkfjslf skfjs f sdfksjdf sfls k sdf ksflsj ",
-      clientStatus: "active",
-      createdAt: "",
-      updatedAt: ""
-    }
-  ],
+  clientsList: [],
   currentClient: {
     clientId: "",
     firstName: "",
@@ -66,7 +31,6 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
   case CREATE_CLIENT:
-    console.log('action: ', action)
     return {
       ...state,
       clientsList: [...state.clientsList, action.payload]
@@ -74,7 +38,7 @@ export default function(state = initialState, action) {
   case DELETE_CLIENT:
     return {
       clientsList: remove(clone(state.clientsList), client => {
-        return client.clientId === action.payload;
+        return client.clientId !== action.payload;
       }),
       currentClient: initialState.currentClient
     };
@@ -82,7 +46,6 @@ export default function(state = initialState, action) {
     return { ...state, clientsList: action.payload };
   case UPDATE_CLIENT:
     return {
-      ...state,
       clientsList: state.clientsList.map(client => {
         if (client.clientId === action.payload.clientId) {
           return action.payload;

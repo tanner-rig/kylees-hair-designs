@@ -41,8 +41,8 @@ export default function(state = initialState, action) {
     };
   case DELETE_APPOINTMENT:
     return {
-      appointmentsList: remove(clone(state.appointmentsList), apppointment => {
-        return apppointment.apppointmentId === action.payload;
+      appointmentsList: remove(clone(state.appointmentsList), appointment => {
+        return appointment.appointmentId !== action.payload;
       }),
       currentAppt: initialState.currentAppt
     };
@@ -50,14 +50,13 @@ export default function(state = initialState, action) {
     return { ...state, appointmentsList: action.payload };
   case UPDATE_APPOINTMENT:
     return {
-      appointmentsList: state.appointmentsList.map(apppointment => {
-        if (apppointment.apppointmentId === action.payload.apppointmentId) {
+      appointmentsList: state.appointmentsList.map(appointment => {
+        if (appointment.appointmentId === action.payload.appointmentId) {
           return action.payload;
         }
 
-        return apppointment;
-      }),
-      currentAppt: action.payload
+        return appointment;
+      })
     };
   default:
     return state;

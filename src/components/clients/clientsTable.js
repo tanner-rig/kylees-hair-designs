@@ -1,33 +1,31 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 import routes from "../../constants/routes";
-import { getClients } from "../../actions/clientsActions";
 import "./clientsTable.scss";
 
-class ClientsTable extends Component {
-  render() {
-    const { clients } = this.props;
+export const ClientsTable = props => {
+  const { clients } = props;
 
-    return (
-      <div className="clients">
-        <div className="clients-header">
-          <div className="ch-name">Name</div>
-          <div className="ch-phone">Phone</div>
-          <div className="ch-email">Email</div>
-          <div className="ch-contact">Contact Method</div>
-          <div className="ch-allergies">Allergies</div>
-          <div className="ch-waiver">Waiver</div>
-          <div className="ch-history">Hair History</div>
-          <div className="ch-notes">Notes</div>
-        </div>
-        {clients.map(client => {
-          return (
+  return (
+    <div className="clients">
+      <div className="clients-header">
+        <div className="ch-name">Name</div>
+        <div className="ch-phone">Phone</div>
+        <div className="ch-email">Email</div>
+        <div className="ch-contact">Contact Method</div>
+        <div className="ch-allergies">Allergies</div>
+        <div className="ch-waiver">Waiver</div>
+        <div className="ch-history">Hair History</div>
+        <div className="ch-notes">Notes</div>
+        <div className="ch-actions" />
+      </div>
+      {clients.map(client => {
+        return (
+          <div className="client-table-row" key={client.clientId}>
             <Link
-              className="client-row"
-              key={client.clientId}
-              to={`${routes.client}/${client.clientId}`}
+              className="client-data"
+              to={`${routes.appointments}/${client.clientId}`}
             >
               <div className="client-name">{`${client.firstName} ${client.lastName}`}</div>
               <div className="client-phone">{client.phone}</div>
@@ -40,20 +38,24 @@ class ClientsTable extends Component {
               <div className="client-history">{client.hairHistory}</div>
               <div className="client-notes">{client.notes}</div>
             </Link>
-          );
-        })}
-      </div>
-    );
-  }
-}
-
-function mapStateToProps(state) {
-  return {
-    clients: state.clients.clientsList
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  { getClients }
-)(ClientsTable);
+            <div className="client-actions">
+              <div
+                onClick={() => props.editClient(client)}
+                className="row-action"
+              >
+                edit
+              </div>
+              |
+              <div
+                onClick={() => props.deleteClient(client.clientId)}
+                className="row-action"
+              >
+                delete
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};

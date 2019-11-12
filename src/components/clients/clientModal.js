@@ -21,9 +21,9 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
-import { convertToUnix } from '../../utils/dateUtil';
+import { convertToUnix } from "../../utils/dateUtil";
 import Loader from "../ui-components/Loader";
-import { createClient } from "../../actions/clientsActions";
+import { createClient, updateClient } from "../../actions/clientsActions";
 import v from "../../styles/variables";
 
 const dialogTitleStyle = {
@@ -41,7 +41,7 @@ class ClientModal extends Component {
       instagram: "",
       hairHistory: "",
       email: "",
-      dob: Date.now(),
+      dob: null,
       allergies: "",
       venmo: "",
       notes: ""
@@ -56,23 +56,37 @@ class ClientModal extends Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.client !== this.props.client) {
+      this.setState({
+        client: {
+          ...this.props.client
+        }
+      });
+    }
+  }
+
   handleClientSubmit = () => {
     this.setState({ savingClient: true });
 
-    if (this.state.client.firstName) {
-      this.props.createClient(this.state.client)
+    if (this.props.client) {
+      this.props
+        .updateClient(this.state.client)
         .then(() => {
-          this.setState({ clientModalOpen: false, savingClient: false });
+          this.props.closeModal();
         })
         .catch(err => {
-          this.setState({
-            clientModalOpen: false,
-            savingClient: false,
-            newClientError: err
-          });
+          console.error(err);
         });
     } else {
-      console.error('need a first name');
+      this.props
+        .createClient(this.state.client)
+        .then(() => {
+          this.props.closeModal();
+        })
+        .catch(err => {
+          console.error(err);
+        });
     }
   };
 
@@ -89,8 +103,8 @@ class ClientModal extends Component {
   };
 
   render() {
-    const { client, closeModal, open } = this.props;
-    const { savingClient } = this.props;
+    const { closeModal, open, savingClient } = this.props;
+    const { client } = this.state;
 
     return (
       <div className="client-modal">
@@ -105,7 +119,7 @@ class ClientModal extends Component {
           }
           fullWidth
         >
-          {!client ? (
+          {!this.props.client ? (
             <DialogTitle style={dialogTitleStyle} id="responsive-dialog-title">
               Add a new client
             </DialogTitle>
@@ -122,9 +136,8 @@ class ClientModal extends Component {
                     autoFocus
                     margin="normal"
                     id="firstName"
-                    label="First name"
-                    type="firstName"
-                    value={this.state.client.firstName}
+                    label="First name*"
+                    value={client.firstName}
                     onChange={e =>
                       this.onInputTextChange("firstName", e.target.value)
                     }
@@ -132,9 +145,8 @@ class ClientModal extends Component {
                   <TextField
                     margin="normal"
                     id="lastName"
-                    label="Last name"
-                    type="lastName"
-                    value={this.state.client.lastName}
+                    label="Last name*"
+                    value={client.lastName}
                     onChange={e =>
                       this.onInputTextChange("lastName", e.target.value)
                     }
@@ -143,8 +155,7 @@ class ClientModal extends Component {
                     margin="normal"
                     id="phone"
                     label="Phone"
-                    type="phone"
-                    value={this.state.client.phone}
+                    value={client.phone}
                     onChange={e =>
                       this.onInputTextChange("phone", e.target.value)
                     }
@@ -154,7 +165,7 @@ class ClientModal extends Component {
                     id="email"
                     label="Email"
                     type="email"
-                    value={this.state.client.email}
+                    value={client.email}
                     onChange={e =>
                       this.onInputTextChange("email", e.target.value)
                     }
@@ -168,8 +179,10 @@ class ClientModal extends Component {
                       margin="normal"
                       id="dob"
                       label="Birth date"
-                      value={this.state.client.dob}
-                      onChange={date => this.onInputTextChange("dob", convertToUnix(date))}
+                      value={client.dob}
+                      onChange={date =>
+                        this.onInputTextChange("dob", convertToUnix(date))
+                      }
                       KeyboardButtonProps={{
                         "aria-label": "change date"
                       }}
@@ -179,7 +192,7 @@ class ClientModal extends Component {
                     Preferred contact method
                   </FormLabel>
                   <Select
-                    value={this.state.client.contactMethod}
+                    value={client.contactMethod}
                     onChange={e =>
                       this.onInputTextChange("contactMethod", e.target.value)
                     }
@@ -196,8 +209,7 @@ class ClientModal extends Component {
                     margin="normal"
                     id="instagram"
                     label="Instagram handle"
-                    type="instagram"
-                    value={this.state.client.instagram}
+                    value={client.instagram}
                     onChange={e =>
                       this.onInputTextChange("instagram", e.target.value)
                     }
@@ -207,8 +219,7 @@ class ClientModal extends Component {
                     margin="normal"
                     id="allergies"
                     label="Allergies"
-                    type="allergies"
-                    value={this.state.client.allergies}
+                    value={client.allergies}
                     onChange={e =>
                       this.onInputTextChange("allergies", e.target.value)
                     }
@@ -217,8 +228,7 @@ class ClientModal extends Component {
                     margin="normal"
                     id="venmo"
                     label="Venmo"
-                    type="venmo"
-                    value={this.state.client.venmo}
+                    value={client.venmo}
                     onChange={e =>
                       this.onInputTextChange("venmo", e.target.value)
                     }
@@ -229,7 +239,7 @@ class ClientModal extends Component {
                   <RadioGroup
                     aria-label="waiver"
                     name="waiver"
-                    value={this.state.client.waiver}
+                    value={client.waiver}
                     onChange={e =>
                       this.onInputTextChange("waiver", e.target.value)
                     }
@@ -252,9 +262,8 @@ class ClientModal extends Component {
                     margin="normal"
                     id="hairHistory"
                     label="Hair history"
-                    type="hairHistory"
                     multiline
-                    value={this.state.client.hairHistory}
+                    value={client.hairHistory}
                     onChange={e =>
                       this.onInputTextChange("hairHistory", e.target.value)
                     }
@@ -263,7 +272,7 @@ class ClientModal extends Component {
                     id="notes"
                     label="Notes"
                     multiline
-                    value={this.state.client.notes}
+                    value={client.notes}
                     onChange={e =>
                       this.onInputTextChange("notes", e.target.value)
                     }
@@ -276,6 +285,7 @@ class ClientModal extends Component {
                   onClick={this.handleClientSubmit}
                   color="primary"
                   autoFocus
+                  disabled={!client.firstName || !client.lastName}
                 >
                   Submit
                 </Button>
@@ -297,7 +307,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { createClient }
-)(ClientModal);
+export default connect(mapStateToProps, { createClient, updateClient })(
+  ClientModal
+);

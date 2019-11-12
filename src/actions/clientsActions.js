@@ -14,8 +14,6 @@ export function createClient(body) {
     return new Promise((resolve, reject) => {
       const options = getOptions();
 
-      console.log("HEY: ", body, options);
-
       axios.post(`${API_URL}/clients`, body, options)
         .then(response => {
           const client = response.data;
@@ -50,34 +48,43 @@ export function deleteClient(clientId) {
 
 export function getClients() {
   return dispatch => {
-    const options = getOptions();
+    return new Promise((resolve, reject) => {
+      const options = getOptions();
 
-    axios.get(`${API_URL}/clients`, options)
-      .then(response => {
-        const clients = response.data.clients;
+      axios.get(`${API_URL}/clients`, options)
+        .then(response => {
+          const clients = response.data.clients;
 
-        // Add clients to redux
-        dispatch({ type: GET_CLIENTS, payload: clients });
-      })
-      .catch(err => {
-        console.error("error getting clients: ", err.response);
-      });
+          // Add clients to redux
+          dispatch({ type: GET_CLIENTS, payload: clients });
+          resolve();
+        })
+        .catch(err => {
+          console.error("error getting clients: ", err.response);
+          reject(err);
+        });
+    });
   };
 }
 
 export function updateClient(body) {
   return dispatch => {
-    const options = getOptions();
+    return new Promise((resolve, reject) => {
+      const options = getOptions();
 
-    axios.put(`${API_URL}/clients/${body.clientId}`, body, options)
-      .then(response => {
-        const client = response.data;
+      axios.put(`${API_URL}/clients/${body.clientId}`, body, options)
+        .then(response => {
+          const client = response.data.client;
 
-        // Update client in Redux state
-        dispatch({ type: UPDATE_CLIENT, payload: client });
-      })
-      .catch(err => {
-        console.error("error getting clients: ", err.response);
-      });
+          // Update client in Redux state
+          dispatch({ type: UPDATE_CLIENT, payload: client });
+          resolve();
+        })
+        .catch(err => {
+          console.error("error getting clients: ", err.response);
+          reject(err);
+        });
+    });
+    
   };
 }

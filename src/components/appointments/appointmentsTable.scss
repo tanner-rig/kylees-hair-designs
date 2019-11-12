@@ -1,77 +1,77 @@
 @import "../../styles/variables";
 
-.clients {
+.appointments-table {
   margin-top: 40px;
 
-  .clients-header {
+  .appointments-header {
     display: flex;
     width: 100%;
     border-bottom: 1px solid $colorBlack15;
     height: 40px;
     font-weight: bold;
 
-    .ch-name {
+    .ah-actions {
+      width: 7%;
+    }
+
+    .ah-status {
       width: 15%;
     }
 
-    .ch-phone {
+    .ah-date {
       width: 15%;
     }
 
-    .ch-email {
+    .ah-time {
       width: 15%;
     }
 
-    .ch-contact {
-      width: 5%;
-    }
-
-    .ch-allergies {
+    .ah-service {
       width: 10%;
     }
 
-    .ch-waiver {
+    .ah-amount {
       width: 5%;
     }
 
-    .ch-history {
-      width: 15%;
+    .ah-discount {
+      width: 5%;
     }
 
-    .ch-notes {
-      width: 20%;
+    .ah-tip {
+      width: 5%;
     }
 
-    .ch-actions {
-      padding: 8px;
-      width: 130px;
+    .ah-notes {
+      width: 25%;
     }
   }
 
-  .client-table-row {
+  .appointment-row {
     display: flex;
 
     &:nth-child(odd) {
       background-color: $colorBlack5;
     }
 
-    .client-actions {
+    .appointment-actions {
       display: flex;
       align-items: center;
       padding: 8px;
       background-color: $colorWhite;
 
-      .row-action {
+      .row-actions {
         padding: 0 8px;
         cursor: pointer;
+        color: $colorPrimary;
 
         &:hover {
-          color: $colorPrimary;
+          color: $colorPrimaryLight;
         }
       }
     }
 
-    .client-data {
+    .appointment-data {
       display: flex;
       width: 100%;
       height: 32px;
@@ -83,36 +83,40 @@
         background-color: $colorBlack15;
       }
 
-      .client-name {
-        width: 15%;
-      }
-
-      .client-phone {
-        width: 15%;
-      }
-
-      .client-email {
-        width: 15%;
-      }
-
-      .client-contact {
+      .appointment-actions {
         width: 5%;
       }
 
-      .client-allergies {
+      .appointment-status {
+        width: 15%;
+      }
+
+      .appointment-date {
+        width: 15%;
+      }
+
+      .appointment-time {
+        width: 15%;
+      }
+
+      .appointment-service {
         width: 10%;
       }
 
-      .client-waiver {
+      .appointment-amount {
         width: 5%;
       }
 
-      .client-history {
-        width: 15%;
+      .appointment-discount {
+        width: 5%;
       }
 
-      .client-notes {
-        width: 20%;
+      .appointment-tip {
+        width: 5%;
+      }
+
+      .appointment-notes {
+        width: 25%;
       }
     }
   }
