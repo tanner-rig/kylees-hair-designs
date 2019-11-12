@@ -31,95 +31,72 @@ const dialogTitleStyle = {
 };
 
 class AppointmentModal extends Component {
-  defaultAppt = {
-    amountPaid: "",
-    apptStatus: "",
-    clientId: this.props.clientId,
-    date: Date.now(),
-    discountAmount: "",
-    discountType: "",
-    duration: "",
-    followUpDate: Date.now(),
-    followUpTime: "",
-    location: "",
-    milesDriven: "",
-    notes: "",
-    productUsed: "",
-    retailItemsAmount: "",
-    retailItemsSold: "",
-    service: "",
-    time: "",
-    tip: "",
-    savingAppointment: false
-  }
-
   state = {
-    appointment: this.defaultAppt
+    appointment: {
+      amountPaid: "",
+      apptStatus: "",
+      date: null,
+      discountAmount: "",
+      discountType: "",
+      duration: "",
+      followUpDate: null,
+      followUpTime: "",
+      location: "",
+      milesDriven: "",
+      notes: "",
+      productUsed: "",
+      retailItemsAmount: "",
+      retailItemsSold: "",
+      service: "",
+      time: "",
+      tip: "",
+      savingAppointment: false
+    }
   };
 
   componentDidMount() {
     if (this.props.appointment) {
       this.setState({
-        appointment: {
-          ...this.props.appointment,
-          clientId: this.props.clientId
-        }
+        appointment: this.props.appointment
       });
     }
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.clientId !== this.props.clientId) {
+    if (prevProps.appointment !== this.props.appointment) {
       this.setState({
-        appointment: {
-          ...this.state.appointment,
-          clientId: this.props.clientId
-        }
+        appointment: this.props.appointment
       });
-
-      this.defaultAppt.clientId = this.props.clientId;
     }
   }
 
   handleAppointmentSubmit = () => {
     this.setState({ savingAppointment: true });
 
-    this.props.closeModal();
-
     if (this.props.appointment) {
       this.props
-        .updateAppointment(this.state.appointment)
+        .updateAppointment({
+          ...this.state.appointment,
+          clientId: this.props.clientId
+        })
         .then(() => {
-          this.setState({
-            savingAppointment: false,
-            appointment: this.defaultAppt
-          });
+          this.props.closeModal();
         })
         .catch(err => {
-          this.setState({
-            savingAppointment: false,
-            newAppointmentError: err,
-            appointment: this.defaultAppt
-          });
-        });
-    } else if (this.state.appointment.apptStatus) {
-      this.props
-        .createAppointment(this.state.appointment)
-        .then(() => {
-          this.setState({
-            savingAppointment: false,
-            appointment: this.defaultAppt
-          });
-        })
-        .catch(err => {
-          this.setState({
-            savingAppointment: false,
-            newAppointmentError: err,
-            appointment: this.defaultAppt
-          });
+          console.error(err);
         });
     } else {
-      console.error("need a status");
+      this.props
+        .createAppointment({
+          ...this.state.appointment,
+          clientId: this.props.clientId
+        })
+        .then(() => {
+          this.props.closeModal();
+        })
+        .catch(err => {
+          console.error(err);
+        });
     }
   };
 
@@ -136,8 +113,8 @@ class AppointmentModal extends Component {
   };
 
   render() {
-    const { appointment, closeModal, open } = this.props;
-    const { savingAppointment } = this.props;
+    const { closeModal, open, savingAppointment } = this.props;
+    const { appointment } = this.state;
 
     return (
       <div className="appointment-modal">
@@ -152,7 +129,7 @@ class AppointmentModal extends Component {
           }
           fullWidth
         >
-          {!appointment ? (
+          {!this.props.appointment ? (
             <DialogTitle style={dialogTitleStyle} id="responsive-dialog-title">
               Add a new appointment
             </DialogTitle>
@@ -166,10 +143,10 @@ class AppointmentModal extends Component {
               <DialogContent style={{ paddingTop: 0 }}>
                 <FormControl fullWidth>
                   <FormLabel style={{ marginTop: "16px" }}>
-                    Appointment Status
+                    Appointment Status*
                   </FormLabel>
                   <Select
-                    value={this.state.appointment.apptStatus}
+                    value={appointment.apptStatus}
                     onChange={e =>
                       this.onInputTextChange("apptStatus", e.target.value)
                     }
@@ -186,7 +163,7 @@ class AppointmentModal extends Component {
                     margin="normal"
                     id="service"
                     label="Service"
-                    value={this.state.appointment.service}
+                    value={appointment.service}
                     onChange={e =>
                       this.onInputTextChange("service", e.target.value)
                     }
@@ -197,8 +174,8 @@ class AppointmentModal extends Component {
                       format="MM/dd/yyyy"
                       margin="normal"
                       id="date"
-                      label="Appt. date"
-                      value={this.state.appointment.date}
+                      label="Appt. date*"
+                      value={appointment.date}
                       onChange={date =>
                         this.onInputTextChange("date", convertToUnix(date))
                       }
@@ -211,16 +188,15 @@ class AppointmentModal extends Component {
                     autoFocus
                     margin="normal"
                     id="time"
-                    label="Appt. time"
+                    label="Appt. time (MST)"
                     type="time"
-                    defaultValue="09:00"
                     InputLabelProps={{
                       shrink: true
                     }}
                     inputProps={{
                       step: 300 // 5 min
                     }}
-                    value={this.state.appointment.time}
+                    value={appointment.time}
                     onChange={e =>
                       this.onInputTextChange("time", e.target.value)
                     }
@@ -230,7 +206,7 @@ class AppointmentModal extends Component {
                     id="duration"
                     label="Appt. duration (minutes)"
                     type="number"
-                    value={this.state.appointment.duration}
+                    value={appointment.duration}
                     onChange={e =>
                       this.onInputTextChange("duration", e.target.value)
                     }
@@ -239,7 +215,7 @@ class AppointmentModal extends Component {
                     margin="normal"
                     id="location"
                     label="Location"
-                    value={this.state.appointment.location}
+                    value={appointment.location}
                     onChange={e =>
                       this.onInputTextChange("location", e.target.value)
                     }
@@ -249,7 +225,7 @@ class AppointmentModal extends Component {
                     id="amountPaid"
                     label="Amount paid"
                     type="number"
-                    value={this.state.appointment.amountPaid}
+                    value={appointment.amountPaid}
                     onChange={e =>
                       this.onInputTextChange("amountPaid", e.target.value)
                     }
@@ -259,7 +235,7 @@ class AppointmentModal extends Component {
                     id="tip"
                     label="Tip"
                     type="number"
-                    value={this.state.appointment.tip}
+                    value={appointment.tip}
                     onChange={e =>
                       this.onInputTextChange("tip", e.target.value)
                     }
@@ -268,7 +244,7 @@ class AppointmentModal extends Component {
                     margin="normal"
                     id="discountType"
                     label="Discount type"
-                    value={this.state.appointment.discountType}
+                    value={appointment.discountType}
                     onChange={e =>
                       this.onInputTextChange("discountType", e.target.value)
                     }
@@ -278,7 +254,7 @@ class AppointmentModal extends Component {
                     id="discountAmount"
                     label="Discount amount"
                     type="number"
-                    value={this.state.appointment.discountAmount}
+                    value={appointment.discountAmount}
                     onChange={e =>
                       this.onInputTextChange("discountAmount", e.target.value)
                     }
@@ -287,7 +263,7 @@ class AppointmentModal extends Component {
                     margin="normal"
                     id="productUsed"
                     label="Product Used"
-                    value={this.state.appointment.productUsed}
+                    value={appointment.productUsed}
                     onChange={e =>
                       this.onInputTextChange("productUsed", e.target.value)
                     }
@@ -296,7 +272,7 @@ class AppointmentModal extends Component {
                     margin="normal"
                     id="retailItemsSold"
                     label="Retail items sold"
-                    value={this.state.appointment.retailItemsSold}
+                    value={appointment.retailItemsSold}
                     onChange={e =>
                       this.onInputTextChange("retailItemsSold", e.target.value)
                     }
@@ -306,7 +282,7 @@ class AppointmentModal extends Component {
                     id="retailItemsAmount"
                     label="Retail items amount"
                     type="number"
-                    value={this.state.appointment.retailItemsAmount}
+                    value={appointment.retailItemsAmount}
                     onChange={e =>
                       this.onInputTextChange(
                         "retailItemsAmount",
@@ -319,7 +295,7 @@ class AppointmentModal extends Component {
                     id="milesDriven"
                     label="Miles driven"
                     type="number"
-                    value={this.state.appointment.milesDriven}
+                    value={appointment.milesDriven}
                     onChange={e =>
                       this.onInputTextChange("milesDriven", e.target.value)
                     }
@@ -331,7 +307,7 @@ class AppointmentModal extends Component {
                       margin="normal"
                       id="followUpDate"
                       label="Follow up date"
-                      value={this.state.appointment.followUpDate}
+                      value={appointment.followUpDate}
                       onChange={date =>
                         this.onInputTextChange(
                           "followUpDate",
@@ -346,16 +322,15 @@ class AppointmentModal extends Component {
                   <TextField
                     margin="normal"
                     id="followUpTime"
-                    label="Follow up time"
+                    label="Follow up time (MST)"
                     type="time"
-                    defaultValue="09:00"
                     InputLabelProps={{
                       shrink: true
                     }}
                     inputProps={{
                       step: 300 // 5 min
                     }}
-                    value={this.state.appointment.followUpTime}
+                    value={appointment.followUpTime}
                     onChange={e =>
                       this.onInputTextChange("followUpTime", e.target.value)
                     }
@@ -364,7 +339,7 @@ class AppointmentModal extends Component {
                     id="notes"
                     label="Notes"
                     multiline
-                    value={this.state.appointment.notes}
+                    value={appointment.notes}
                     onChange={e =>
                       this.onInputTextChange("notes", e.target.value)
                     }
@@ -377,13 +352,11 @@ class AppointmentModal extends Component {
                   onClick={this.handleAppointmentSubmit}
                   color="primary"
                   autoFocus
+                  disabled={!appointment.date || !appointment.apptStatus}
                 >
                   Submit
                 </Button>
-                <Button onClick={() => {
-                  this.setState({ appointment: this.defaultAppt });
-                  closeModal();
-                }} color="primary">
+                <Button onClick={closeModal} color="primary">
                   Close
                 </Button>
               </DialogActions>
@@ -401,7 +374,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { createAppointment, updateAppointment }
-)(AppointmentModal);
+export default connect(mapStateToProps, {
+  createAppointment,
+  updateAppointment
+})(AppointmentModal);

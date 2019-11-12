@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { MdNoteAdd } from "react-icons/md";
 
+import routes from "../../constants/routes";
 import AppointmentModal from "./appointmentModal";
 import { AppointmentsTable } from "./appointmentsTable";
 import {
@@ -24,14 +25,14 @@ class Appointments extends Component {
     const params = window.location.href.split("/");
     const clientId = params[params.length - 1];
 
-    this.setState({ clientId });
-
-    if (clientId) {
+    if (clientId && clientId !== "appointments") {
       this.props.getAppointments(clientId).then(() => {
+        this.setState({ clientId });
+
         this.setState({ loading: false });
       });
     } else {
-      this.setState({ loading: false });
+      this.props.history.push(routes.clients);
     }
   }
 
@@ -66,12 +67,14 @@ class Appointments extends Component {
             Add appointment <MdNoteAdd />
           </div>
         </div>
-        <AppointmentModal
-          open={this.state.appointmentModalOpen}
-          closeModal={this.handleCloseAppointmentModal}
-          clientId={this.state.clientId}
-          appointment={this.state.currentAppt}
-        />
+        {this.state.appointmentModalOpen && (
+          <AppointmentModal
+            open={this.state.appointmentModalOpen}
+            closeModal={this.handleCloseAppointmentModal}
+            clientId={this.state.clientId}
+            appointment={this.state.currentAppt}
+          />
+        )}
         {this.state.loading ? (
           <Loader size={80} />
         ) : appointments.length > 0 ? (
@@ -94,7 +97,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { getAppointments, deleteAppointment }
-)(Appointments);
+export default connect(mapStateToProps, { getAppointments, deleteAppointment })(
+  Appointments
+);

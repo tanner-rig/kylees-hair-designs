@@ -46,7 +46,6 @@ export default function(state = initialState, action) {
     return { ...state, clientsList: action.payload };
   case UPDATE_CLIENT:
     return {
-      ...state,
       clientsList: state.clientsList.map(client => {
         if (client.clientId === action.payload.clientId) {
           return action.payload;

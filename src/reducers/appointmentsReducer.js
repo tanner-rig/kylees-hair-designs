@@ -56,8 +56,7 @@ export default function(state = initialState, action) {
         }
 
         return appointment;
-      }),
-      currentAppt: action.payload
+      })
     };
   default:
     return state;

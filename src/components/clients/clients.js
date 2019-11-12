@@ -23,7 +23,7 @@ class Clients extends Component {
   }
 
   editClient = currentClient => {
-    this.setState({ currentClient, appointmentModalOpen: true });
+    this.setState({ currentClient, clientModalOpen: true });
   };
 
   deleteClient = clientId => {
@@ -48,11 +48,13 @@ class Clients extends Component {
             Add client <MdPersonAdd />
           </div>
         </div>
-        <ClientModal
-          open={this.state.clientModalOpen}
-          closeModal={this.handleCloseClientModal}
-          client={this.state.currentClient}
-        />
+        {this.state.clientModalOpen && (
+          <ClientModal
+            open={this.state.clientModalOpen}
+            closeModal={this.handleCloseClientModal}
+            client={this.state.currentClient}
+          />
+        )}
         {this.state.loading ? (
           <Loader size={80} />
         ) : clients.length > 0 ? (
@@ -75,7 +77,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { getClients, deleteClient }
-)(Clients);
+export default connect(mapStateToProps, { getClients, deleteClient })(Clients);

@@ -1,6 +1,8 @@
 import React from "react";
 import { FaTrash } from "react-icons/fa";
 
+import { convertToDateStamp, convertToStandard } from "../../utils/dateUtil";
+
 import "./appointmentsTable.scss";
 
 export const AppointmentsTable = props => {
@@ -27,8 +29,10 @@ export const AppointmentsTable = props => {
               onClick={() => props.editAppointment(appointment)}
             >
               <div className="appointment-status">{appointment.apptStatus}</div>
-              <div className="appointment-date">{appointment.date}</div>
-              <div className="appointment-time">{appointment.time}</div>
+              <div className="appointment-date">
+                {convertToDateStamp(appointment.date)}
+              </div>
+              <div className="appointment-time">{convertToStandard(appointment.time)}</div>
               <div className="appointment-service">{appointment.service}</div>
               <div className="appointment-amount">{appointment.amountPaid}</div>
               <div className="appointment-discount">

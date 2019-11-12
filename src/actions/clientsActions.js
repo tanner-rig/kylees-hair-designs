@@ -69,17 +69,22 @@ export function getClients() {
 
 export function updateClient(body) {
   return dispatch => {
-    const options = getOptions();
+    return new Promise((resolve, reject) => {
+      const options = getOptions();
 
-    axios.put(`${API_URL}/clients/${body.clientId}`, body, options)
-      .then(response => {
-        const client = response.data;
+      axios.put(`${API_URL}/clients/${body.clientId}`, body, options)
+        .then(response => {
+          const client = response.data.client;
 
-        // Update client in Redux state
-        dispatch({ type: UPDATE_CLIENT, payload: client });
-      })
-      .catch(err => {
-        console.error("error getting clients: ", err.response);
-      });
+          // Update client in Redux state
+          dispatch({ type: UPDATE_CLIENT, payload: client });
+          resolve();
+        })
+        .catch(err => {
+          console.error("error getting clients: ", err.response);
+          reject(err);
+        });
+    });
+    
   };
 }

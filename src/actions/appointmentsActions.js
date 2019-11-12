@@ -67,17 +67,24 @@ export function getAppointments(clientId) {
 
 export function updateAppointment(body) {
   return dispatch => {
-    const options = getOptions();
+    return new Promise((resolve, reject) => {
+      const options = getOptions();
 
-    axios.put(`${API_URL}/appointments/${body.appointmentId}`, body, options)
-      .then(response => {
-        const appointment = response.data.appointment;
+      axios.put(`${API_URL}/appointments/${body.appointmentId}`, body, options)
+        .then(response => {
+          const appointment = response.data.appointment;
 
-        // Update appointment in Redux state
-        dispatch({ type: UPDATE_APPOINTMENT, payload: appointment });
-      })
-      .catch(err => {
-        console.error("error getting appointments: ", err.response);
-      });
+          // Update appointment in Redux state
+          dispatch({ type: UPDATE_APPOINTMENT, payload: appointment });
+
+          resolve();
+        })
+        .catch(err => {
+          console.error("error getting appointments: ", err.response);
+
+          reject(err);
+        });
+    });
+    
   };
 }

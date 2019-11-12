@@ -19,9 +19,6 @@
       "modules": true
     }
   },
-  "globals": {
-    "sleep": 1
-  },
   "rules": {
     "no-empty": 0,
     "no-console": 0,
