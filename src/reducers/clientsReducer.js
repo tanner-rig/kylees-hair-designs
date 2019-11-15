@@ -3,6 +3,7 @@ import {
   CREATE_CLIENT,
   DELETE_CLIENT,
   GET_CLIENTS,
+  GET_CLIENT,
   UPDATE_CLIENT
 } from "../actions/types";
 
@@ -44,6 +45,8 @@ export default function(state = initialState, action) {
     };
   case GET_CLIENTS:
     return { ...state, clientsList: action.payload };
+  case GET_CLIENT:
+    return { ...state, currentClient: action.payload };
   case UPDATE_CLIENT:
     return {
       clientsList: state.clientsList.map(client => {

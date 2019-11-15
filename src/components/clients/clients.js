@@ -62,6 +62,7 @@ class Clients extends Component {
             clients={clients}
             editClient={this.editClient}
             deleteClient={this.deleteClient}
+            history={this.props.history}
           />
         ) : (
           <div>No clients yet, add a new client</div>

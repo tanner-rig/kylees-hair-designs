@@ -6,7 +6,7 @@ $borderRadius: 4px;
 
 // Break Points
 $leftNavWidth: 275px;
-$maxMobileWidth: 1000px;
+$maxMobileWidth: 767px;
 $containerDesktopWidth: calc(100vw - #{$leftNavWidth});
 $containerMobileWidth: 100vw;
 

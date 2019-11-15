@@ -26,6 +26,10 @@
         letter-spacing: 5.08px;
         font-weight: $fontWeightRegular;
         font-family: serif;
+
+        @media (max-width: #{$maxMobileWidth}) {
+          font-size: 18px;
+        }
       }
 
       .tb-desktop-only {

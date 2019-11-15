@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FaTrash, FaPencilAlt } from "react-icons/fa";
 
 import routes from "../../constants/routes";
 import "./clientsTable.scss";
@@ -13,7 +14,6 @@ export const ClientsTable = props => {
         <div className="ch-name">Name</div>
         <div className="ch-phone">Phone</div>
         <div className="ch-email">Email</div>
-        <div className="ch-contact">Contact Method</div>
         <div className="ch-allergies">Allergies</div>
         <div className="ch-waiver">Waiver</div>
         <div className="ch-history">Hair History</div>
@@ -23,39 +23,65 @@ export const ClientsTable = props => {
       {clients.map(client => {
         return (
           <div className="client-table-row" key={client.clientId}>
-            <Link
+            <div
               className="client-data"
-              to={`${routes.appointments}/${client.clientId}`}
+              onClick={() =>
+                props.history.push(`${routes.appointments}/${client.clientId}`)
+              }
             >
-              <div className="client-name">{`${client.firstName} ${client.lastName}`}</div>
-              <div className="client-phone">{client.phone}</div>
-              <div className="client-email">{client.email}</div>
-              <div className="client-contact">{client.contactMethod}</div>
-              <div className="client-allergies">{client.allergies}</div>
-              <div className="client-waiver">
+              <div className="ct-data-item client-name">{`${client.firstName} ${client.lastName}`}</div>
+              <div className="ct-data-item client-phone">
+                <a
+                  href={`tel:${client.phone}`}
+                  onClick={e => e.stopPropagation()}
+                >
+                  {`${client.phone}${
+                    client.contactMethod === "text"
+                      ? "* (text)"
+                      : client.contactMethod === "call"
+                        ? "* (call)"
+                        : ""
+                  }`}
+                </a>
+              </div>
+              <div className="ct-data-item client-email">
+                <a
+                  href={`mailto:${client.email}`}
+                  onClick={e => e.stopPropagation()}
+                >
+                  {`${client.email}${
+                    client.contactMethod === "email" ? "*" : ""
+                  }`}
+                </a>
+              </div>
+              <div className="ct-data-item client-allergies">
+                {client.allergies}
+              </div>
+              <div className="ct-data-item client-waiver">
                 {client.waiver ? "Yes" : "No"}
               </div>
-              <div className="client-history">{client.hairHistory}</div>
-              <div className="client-notes">{client.notes}</div>
-            </Link>
+              <div className="ct-data-item client-history">
+                {client.hairHistory}
+              </div>
+              <div className="ct-data-item client-notes">{client.notes}</div>
+            </div>
             <div className="client-actions">
-              <div
+              <FaPencilAlt
                 onClick={() => props.editClient(client)}
                 className="row-action"
-              >
-                edit
-              </div>
+                size={16}
+              />
               |
-              <div
+              <FaTrash
                 onClick={() => props.deleteClient(client.clientId)}
                 className="row-action"
-              >
-                delete
-              </div>
+                size={16}
+              />
             </div>
           </div>
         );
       })}
+      <div className='asterisk-info'>* preferred contact method</div>
     </div>
   );
 };
