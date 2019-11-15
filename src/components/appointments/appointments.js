@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { MdNoteAdd } from "react-icons/md";
+import { find, isEmpty } from "lodash";
 
 import routes from "../../constants/routes";
 import AppointmentModal from "./appointmentModal";
@@ -9,6 +10,7 @@ import {
   getAppointments,
   deleteAppointment
 } from "../../actions/appointmentsActions";
+import { getClient } from "../../actions/clientsActions";
 import Loader from "../ui-components/Loader";
 
 import "./appointments.scss";
@@ -18,7 +20,8 @@ class Appointments extends Component {
     appointmentModalOpen: false,
     clientId: "",
     currentAppt: null,
-    loading: true
+    loading: true,
+    currentClient: {}
   };
 
   componentDidMount() {
@@ -26,13 +29,28 @@ class Appointments extends Component {
     const clientId = params[params.length - 1];
 
     if (clientId && clientId !== "appointments") {
-      this.props.getAppointments(clientId).then(() => {
-        this.setState({ clientId });
+      if (isEmpty(this.props.clients)) {
+        this.props.getClient(clientId);
+      } else {
+        this.setState({
+          currentClient: find(
+            this.props.clients,
+            client => client.clientId === clientId
+          )
+        });
+      }
 
-        this.setState({ loading: false });
+      this.props.getAppointments(clientId).then(() => {
+        this.setState({ clientId, loading: false });
       });
     } else {
       this.props.history.push(routes.clients);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.client !== this.props.client) {
+      this.setState({ currentClient: this.props.client });
     }
   }
 
@@ -54,6 +72,13 @@ class Appointments extends Component {
 
   render() {
     const { appointments } = this.props;
+    const { currentClient } = this.state;
+
+    const fullName =
+      currentClient.firstName || currentClient.lastName
+        ? `${currentClient?.firstName} ${currentClient?.lastName}`
+        : "";
+
     return (
       <div className="appointments">
         <div className="appointments-actions">
@@ -67,6 +92,7 @@ class Appointments extends Component {
             Add appointment <MdNoteAdd />
           </div>
         </div>
+        <div className="appt-client-name">{fullName}</div>
         {this.state.appointmentModalOpen && (
           <AppointmentModal
             open={this.state.appointmentModalOpen}
@@ -93,10 +119,14 @@ class Appointments extends Component {
 
 function mapStateToProps(state) {
   return {
-    appointments: state.appointments.appointmentsList
+    appointments: state.appointments.appointmentsList,
+    clients: state.clients.clientsList,
+    client: state.clients.currentClient
   };
 }
 
-export default connect(mapStateToProps, { getAppointments, deleteAppointment })(
-  Appointments
-);
+export default connect(mapStateToProps, {
+  getAppointments,
+  deleteAppointment,
+  getClient
+})(Appointments);

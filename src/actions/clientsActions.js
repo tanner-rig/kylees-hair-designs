@@ -6,6 +6,7 @@ import {
   CREATE_CLIENT,
   DELETE_CLIENT,
   GET_CLIENTS,
+  GET_CLIENT,
   UPDATE_CLIENT
 } from "./types";
 
@@ -64,6 +65,23 @@ export function getClients() {
           reject(err);
         });
     });
+  };
+}
+
+export function getClient(clientId) {
+  return dispatch => {
+    const options = getOptions();
+
+    axios.get(`${API_URL}/clients/${clientId}`, options)
+      .then(response => {
+        const client = response.data.client;
+
+        // Add clients to redux
+        dispatch({ type: GET_CLIENT, payload: client });
+      })
+      .catch(err => {
+        console.error("error getting clients: ", err.response);
+      });
   };
 }
 

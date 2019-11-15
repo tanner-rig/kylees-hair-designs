@@ -3,6 +3,13 @@
 .appointments {
   padding: 16px;
   font-size: $fontSizeBase;
+
+  .appt-client-name {
+      margin-top: 16px;
+      font-weight: bold;
+      font-size: 20px;
+      color: $colorBlack70;
+    }
   
   .appointments-actions {
     display: flex;
@@ -35,6 +42,34 @@
         color: $colorPrimary;
         font-size: 32px;
         transition: color $transitionTime;
+      }
+    }
+
+    @media (max-width: #{$maxMobileWidth}) {
+      .back-button {
+        font-size: 15px;
+        color: $colorPrimary;
+        margin-left: -50px;
+  
+        &:hover {
+          color: $colorPrimary65;
+        }
+      }
+
+      .add-appointment {
+        margin: -5px 0 0 0;
+        font-size: 14px;
+  
+        &:hover {
+          color: $colorPrimary;
+        }
+  
+        svg {
+          margin-left: 8px;
+          color: $colorPrimary;
+          font-size: 25px;
+          transition: color $transitionTime;
+        }
       }
     }
   }

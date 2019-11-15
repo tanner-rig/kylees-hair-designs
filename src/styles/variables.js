@@ -5,7 +5,7 @@ export const borderRadius = '4px';
 
 // Break Points
 export const leftNavWidth = '275px';
-export const maxMobileWidth = '1000px';
+export const maxMobileWidth = '767px';
 
 // Colors
 export const colorBlack = '#000';

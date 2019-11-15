@@ -9,6 +9,7 @@ module.exports.UPDATE_USER = 'UPDATE_USER';
 module.exports.CREATE_CLIENT = 'CREATE_CLIENT';
 module.exports.DELETE_CLIENT = 'DELETE_CLIENT';
 module.exports.GET_CLIENTS = 'GET_CLIENTS';
+module.exports.GET_CLIENT = 'GET_CLIENT';
 module.exports.UPDATE_CLIENT = 'UPDATE_CLIENT';
 
 // Appointment Actions

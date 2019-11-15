@@ -155,8 +155,8 @@ class AppointmentModal extends Component {
                       id: "appt-status"
                     }}
                   >
-                    <MenuItem value="complete">Complete</MenuItem>
-                    <MenuItem value="upcoming">Upcoming</MenuItem>
+                    <MenuItem value="Complete">Complete</MenuItem>
+                    <MenuItem value="Upcoming">Upcoming</MenuItem>
                   </Select>
                   <TextField
                     autoFocus

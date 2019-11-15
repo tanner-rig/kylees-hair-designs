@@ -28,18 +28,18 @@ export const AppointmentsTable = props => {
               className="appointment-data"
               onClick={() => props.editAppointment(appointment)}
             >
-              <div className="appointment-status">{appointment.apptStatus}</div>
-              <div className="appointment-date">
+              <div className="at-data-item appointment-status">{appointment.apptStatus}</div>
+              <div className="at-data-item appointment-date">
                 {convertToDateStamp(appointment.date)}
               </div>
-              <div className="appointment-time">{convertToStandard(appointment.time)}</div>
-              <div className="appointment-service">{appointment.service}</div>
-              <div className="appointment-amount">{appointment.amountPaid}</div>
-              <div className="appointment-discount">
+              <div className="at-data-item appointment-time">{convertToStandard(appointment.time)}</div>
+              <div className="at-data-item appointment-service">{appointment.service}</div>
+              <div className="at-data-item appointment-amount">{appointment.amountPaid}</div>
+              <div className="at-data-item appointment-discount">
                 {appointment.discountAmount ? "Yes" : "No"}
               </div>
-              <div className="appointment-tip">{appointment.tip}</div>
-              <div className="appointment-notes">{appointment.notes}</div>
+              <div className="at-data-item appointment-tip">{appointment.tip}</div>
+              <div className="at-data-item appointment-notes">{appointment.notes}</div>
             </div>
             <div className="appointment-actions">
               <FaTrash
