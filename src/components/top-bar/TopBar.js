@@ -61,7 +61,8 @@ class TopBar extends Component {
                 <MenuItem
                   onClick={() => {
                     this.handleClose();
-                    this.props.logoutUser;
+                    this.props.history.push(routes.home);
+                    this.props.logoutUser();
                   }}
                 >
                   Logout
