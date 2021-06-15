@@ -62,9 +62,7 @@ export const ClientsTable = (props) => {
               <div className="ct-data-item client-history">
                 {client.hairHistory}
               </div>
-              <div className="ct-data-item client-notes">
-                {client.notes}
-              </div>
+              <div className="ct-data-item client-notes">{client.notes}</div>
             </div>
             <div className="client-actions">
               <FaPencilAlt
@@ -74,7 +72,7 @@ export const ClientsTable = (props) => {
               />
               |
               <FaTrash
-                onClick={() => props.deleteClient(client.clientId)}
+                onClick={() => props.deleteClient(client)}
                 className="row-action"
                 size={16}
               />

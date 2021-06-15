@@ -296,7 +296,7 @@ class ClientModal extends Component {
                 <Button
                   onClick={this.handleClientSubmit}
                   color="primary"
-                  autoFocus
+                  variant="contained"
                   disabled={!client.firstName || !client.lastName}
                 >
                   Submit

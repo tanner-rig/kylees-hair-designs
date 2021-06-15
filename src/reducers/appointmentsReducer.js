@@ -16,6 +16,7 @@ const initialState = {
     followUpDate: '',
     followUpTime: '',
     amountPaid: '',
+    amountCharged: '',
     discountType: '',
     discountAmount: '',
     tip: '',

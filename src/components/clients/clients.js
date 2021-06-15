@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { MdPersonAdd } from "react-icons/md";
+import { Button } from "@material-ui/core";
 
 import { getClients, deleteClient } from "../../actions/clientsActions";
 import { ClientsTable } from "./clientsTable";
@@ -12,8 +13,9 @@ import "./clients.scss";
 class Clients extends Component {
   state = {
     clientModalOpen: false,
+    clientToDelete: "",
     currentClient: null,
-    loading: true
+    loading: true,
   };
 
   componentDidMount() {
@@ -22,12 +24,17 @@ class Clients extends Component {
     });
   }
 
-  editClient = currentClient => {
+  editClient = (currentClient) => {
     this.setState({ currentClient, clientModalOpen: true });
   };
 
-  deleteClient = clientId => {
-    this.props.deleteClient(clientId);
+  showDeleteModal = (clientToDelete) => {
+    this.setState({ clientToDelete });
+  };
+
+  deleteClient = () => {
+    this.props.deleteClient(this.state.clientToDelete.clientId);
+    this.setState({ clientToDelete: "" });
   };
 
   handleCloseClientModal = () => {
@@ -61,11 +68,35 @@ class Clients extends Component {
           <ClientsTable
             clients={clients}
             editClient={this.editClient}
-            deleteClient={this.deleteClient}
+            deleteClient={this.showDeleteModal}
             history={this.props.history}
           />
         ) : (
           <div>No clients yet, add a new client</div>
+        )}
+        {!!this.state.clientToDelete.clientId && (
+          <div className="modal-wrapper">
+            <div className="delete-modal">
+              <div
+                style={{ marginBottom: 24 }}
+              >{`Are you sure you want to delete ${this.state.clientToDelete?.firstName} ${this.state.clientToDelete?.lastName}?`}</div>
+              <div>
+                <Button
+                  onClick={this.deleteClient}
+                  color="primary"
+                  variant="contained"
+                >
+                  Delete
+                </Button>
+                <Button
+                  onClick={() => this.setState({ clientToDelete: "" })}
+                  color="primary"
+                >
+                  Close
+                </Button>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     );
@@ -74,7 +105,7 @@ class Clients extends Component {
 
 function mapStateToProps(state) {
   return {
-    clients: state.clients.clientsList
+    clients: state.clients.clientsList,
   };
 }
 

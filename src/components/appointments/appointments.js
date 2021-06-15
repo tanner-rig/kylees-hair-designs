@@ -2,26 +2,29 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { MdNoteAdd } from "react-icons/md";
 import { find, isEmpty } from "lodash";
+import { Button } from "@material-ui/core";
 
 import routes from "../../constants/routes";
 import AppointmentModal from "./appointmentModal";
 import { AppointmentsTable } from "./appointmentsTable";
 import {
   getAppointments,
-  deleteAppointment
+  deleteAppointment,
 } from "../../actions/appointmentsActions";
 import { getClient } from "../../actions/clientsActions";
 import Loader from "../ui-components/Loader";
+import { convertToDateStamp } from "../../utils/dateUtil";
 
 import "./appointments.scss";
 
 class Appointments extends Component {
   state = {
     appointmentModalOpen: false,
+    apptToDelete: "",
     clientId: "",
     currentAppt: null,
     loading: true,
-    currentClient: {}
+    currentClient: {},
   };
 
   componentDidMount() {
@@ -35,8 +38,8 @@ class Appointments extends Component {
         this.setState({
           currentClient: find(
             this.props.clients,
-            client => client.clientId === clientId
-          )
+            (client) => client.clientId === clientId
+          ),
         });
       }
 
@@ -54,12 +57,17 @@ class Appointments extends Component {
     }
   }
 
-  editAppointment = currentAppt => {
+  editAppointment = (currentAppt) => {
     this.setState({ currentAppt, appointmentModalOpen: true });
   };
 
-  deleteAppointment = appointmentId => {
-    this.props.deleteAppointment(appointmentId);
+  showDeleteModal = (apptToDelete) => {
+    this.setState({ apptToDelete });
+  };
+
+  deleteAppointment = () => {
+    this.props.deleteAppointment(this.state.apptToDelete.appointmentId);
+    this.setState({ apptToDelete: "" });
   };
 
   handleCloseAppointmentModal = () => {
@@ -72,7 +80,7 @@ class Appointments extends Component {
 
   render() {
     const { appointments } = this.props;
-    const { currentClient } = this.state;
+    const { currentClient, apptToDelete } = this.state;
 
     const fullName =
       currentClient.firstName || currentClient.lastName
@@ -107,10 +115,34 @@ class Appointments extends Component {
           <AppointmentsTable
             appointments={appointments}
             editAppointment={this.editAppointment}
-            deleteAppointment={this.deleteAppointment}
+            deleteAppointment={this.showDeleteModal}
           />
         ) : (
           <div>No appointments for this client yet, add a new appointment</div>
+        )}
+        {!!apptToDelete.appointmentId && (
+          <div className="modal-wrapper">
+            <div className="delete-modal">
+              <div
+                style={{ marginBottom: 24 }}
+              >{`Are you sure you want to delete the appointment on ${convertToDateStamp(apptToDelete?.date)} for ${currentClient?.firstName} ${currentClient?.lastName}?`}</div>
+              <div>
+                <Button
+                  onClick={this.deleteAppointment}
+                  color="primary"
+                  variant="contained"
+                >
+                  Delete
+                </Button>
+                <Button
+                  onClick={() => this.setState({ apptToDelete: "" })}
+                  color="primary"
+                >
+                  Close
+                </Button>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     );
@@ -121,12 +153,12 @@ function mapStateToProps(state) {
   return {
     appointments: state.appointments.appointmentsList,
     clients: state.clients.clientsList,
-    client: state.clients.currentClient
+    client: state.clients.currentClient,
   };
 }
 
 export default connect(mapStateToProps, {
   getAppointments,
   deleteAppointment,
-  getClient
+  getClient,
 })(Appointments);

@@ -45,6 +45,7 @@ const dialogActionsStyle = {
 class AppointmentModal extends Component {
   state = {
     appointment: {
+      amountCharged: "",
       amountPaid: "",
       apptStatus: "",
       date: null,
@@ -171,7 +172,6 @@ class AppointmentModal extends Component {
                     <MenuItem value="Upcoming">Upcoming</MenuItem>
                   </Select>
                   <TextField
-                    autoFocus
                     margin="normal"
                     id="service"
                     label="Service"
@@ -186,7 +186,7 @@ class AppointmentModal extends Component {
                       format="MM/dd/yyyy"
                       margin="normal"
                       id="date"
-                      label="Appt. date*"
+                      label="Appointment date*"
                       value={appointment.date}
                       onChange={(date) =>
                         this.onInputTextChange("date", convertToUnix(date))
@@ -197,10 +197,9 @@ class AppointmentModal extends Component {
                     />
                   </MuiPickersUtilsProvider>
                   <TextField
-                    autoFocus
                     margin="normal"
                     id="time"
-                    label="Appt. time (MST)"
+                    label="Appointment time (MST)"
                     type="time"
                     InputLabelProps={{
                       shrink: true,
@@ -216,7 +215,7 @@ class AppointmentModal extends Component {
                   <TextField
                     margin="normal"
                     id="duration"
-                    label="Appt. duration (minutes)"
+                    label="Appointment duration (minutes)"
                     type="number"
                     value={appointment.duration}
                     onChange={(e) =>
@@ -234,12 +233,12 @@ class AppointmentModal extends Component {
                   />
                   <TextField
                     margin="normal"
-                    id="amountPaid"
-                    label="Amount paid"
+                    id="amountCharged"
+                    label="Amount charged"
                     type="number"
-                    value={appointment.amountPaid}
+                    value={appointment.amountCharged}
                     onChange={(e) =>
-                      this.onInputTextChange("amountPaid", e.target.value)
+                      this.onInputTextChange("amountCharged", e.target.value)
                     }
                   />
                   <TextField
@@ -252,29 +251,11 @@ class AppointmentModal extends Component {
                       this.onInputTextChange("tip", e.target.value)
                     }
                   />
-                  <TextField
-                    margin="normal"
-                    id="discountType"
-                    label="Discount type"
-                    value={appointment.discountType}
-                    onChange={(e) =>
-                      this.onInputTextChange("discountType", e.target.value)
-                    }
-                  />
-                  <TextField
-                    margin="normal"
-                    id="discountAmount"
-                    label="Discount amount"
-                    type="number"
-                    value={appointment.discountAmount}
-                    onChange={(e) =>
-                      this.onInputTextChange("discountAmount", e.target.value)
-                    }
-                  />
+                  
                   <TextField
                     margin="normal"
                     id="productUsed"
-                    label="Product Used"
+                    label="Product(s) Used"
                     value={appointment.productUsed}
                     onChange={(e) =>
                       this.onInputTextChange("productUsed", e.target.value)
@@ -300,6 +281,25 @@ class AppointmentModal extends Component {
                         "retailItemsAmount",
                         e.target.value
                       )
+                    }
+                  />
+                  <TextField
+                    margin="normal"
+                    id="discountType"
+                    label="Discount type"
+                    value={appointment.discountType}
+                    onChange={(e) =>
+                      this.onInputTextChange("discountType", e.target.value)
+                    }
+                  />
+                  <TextField
+                    margin="normal"
+                    id="discountAmount"
+                    label="Discount amount"
+                    type="number"
+                    value={appointment.discountAmount}
+                    onChange={(e) =>
+                      this.onInputTextChange("discountAmount", e.target.value)
                     }
                   />
                   <TextField
@@ -363,7 +363,7 @@ class AppointmentModal extends Component {
                 <Button
                   onClick={this.handleAppointmentSubmit}
                   color="primary"
-                  autoFocus
+                  variant="contained"
                   disabled={!appointment.date || !appointment.apptStatus}
                 >
                   Submit
