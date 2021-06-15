@@ -27,7 +27,19 @@ import { createClient, updateClient } from "../../actions/clientsActions";
 import v from "../../styles/variables";
 
 const dialogTitleStyle = {
-  borderBottom: `1px solid ${v.colorBlack15}`
+  borderBottom: `1px solid ${v.colorBlack15}`,
+  position: "sticky",
+  top: 0,
+  background: v.colorWhite,
+  zIndex: 1,
+};
+
+const dialogActionsStyle = {
+  borderTop: `1px solid ${v.colorBlack15}`,
+  position: "sticky",
+  bottom: 0,
+  background: v.colorWhite,
+  zIndex: 1,
 };
 
 class ClientModal extends Component {
@@ -280,7 +292,7 @@ class ClientModal extends Component {
                   />
                 </FormControl>
               </DialogContent>
-              <DialogActions>
+              <DialogActions style={dialogActionsStyle}>
                 <Button
                   onClick={this.handleClientSubmit}
                   color="primary"

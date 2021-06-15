@@ -79,6 +79,7 @@
 
   .appointment-row {
     display: flex;
+    cursor: pointer;
 
     &:nth-child(odd) {
       background-color: $colorBlack5;
@@ -152,6 +153,9 @@
 
       .appointment-notes {
         width: 500px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       @media (max-width: #{$maxMobileWidth}) {

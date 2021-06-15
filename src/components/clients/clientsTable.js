@@ -1,11 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { FaTrash, FaPencilAlt } from "react-icons/fa";
 
 import routes from "../../constants/routes";
 import "./clientsTable.scss";
 
-export const ClientsTable = props => {
+export const ClientsTable = (props) => {
   const { clients } = props;
 
   return (
@@ -20,7 +19,7 @@ export const ClientsTable = props => {
         <div className="ch-notes">Notes</div>
         <div className="ch-actions" />
       </div>
-      {clients.map(client => {
+      {clients.map((client) => {
         return (
           <div className="client-table-row" key={client.clientId}>
             <div
@@ -33,21 +32,21 @@ export const ClientsTable = props => {
               <div className="ct-data-item client-phone">
                 <a
                   href={`tel:${client.phone}`}
-                  onClick={e => e.stopPropagation()}
+                  onClick={(e) => e.stopPropagation()}
                 >
                   {`${client.phone}${
                     client.contactMethod === "text"
                       ? "* (text)"
                       : client.contactMethod === "call"
-                        ? "* (call)"
-                        : ""
+                      ? "* (call)"
+                      : ""
                   }`}
                 </a>
               </div>
               <div className="ct-data-item client-email">
                 <a
                   href={`mailto:${client.email}`}
-                  onClick={e => e.stopPropagation()}
+                  onClick={(e) => e.stopPropagation()}
                 >
                   {`${client.email}${
                     client.contactMethod === "email" ? "*" : ""
@@ -63,7 +62,9 @@ export const ClientsTable = props => {
               <div className="ct-data-item client-history">
                 {client.hairHistory}
               </div>
-              <div className="ct-data-item client-notes">{client.notes}</div>
+              <div className="ct-data-item client-notes">
+                {client.notes}
+              </div>
             </div>
             <div className="client-actions">
               <FaPencilAlt
@@ -81,7 +82,7 @@ export const ClientsTable = props => {
           </div>
         );
       })}
-      <div className='asterisk-info'>* preferred contact method</div>
+      <div className="asterisk-info">* preferred contact method</div>
     </div>
   );
 };

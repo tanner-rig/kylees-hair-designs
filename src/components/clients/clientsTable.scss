@@ -92,6 +92,7 @@
 
   .client-table-row {
     display: flex;
+    cursor: pointer;
 
     &:nth-child(odd) {
       background-color: $colorBlack5;
@@ -152,10 +153,16 @@
 
       .client-history {
         width: 260px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .client-notes {
         width: 320px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       @media (max-width: #{$maxMobileWidth}) {
@@ -165,31 +172,31 @@
         .client-name {
           width: 100px;
         }
-  
+
         .client-phone {
           width: 101px;
         }
-  
+
         .client-email {
           width: 80px;
         }
-  
+
         .client-contact {
           display: none;
         }
-  
+
         .client-allergies {
           display: none;
         }
-  
+
         .client-waiver {
           display: none;
         }
-  
+
         .client-history {
           display: none;
         }
-  
+
         .client-notes {
           display: none;
         }

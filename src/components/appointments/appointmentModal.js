@@ -10,11 +10,11 @@ import {
   Select,
   MenuItem,
   TextField,
-  FormControl
+  FormControl,
 } from "@material-ui/core";
 import {
   MuiPickersUtilsProvider,
-  KeyboardDatePicker
+  KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
@@ -22,12 +22,24 @@ import { convertToUnix } from "../../utils/dateUtil";
 import Loader from "../ui-components/Loader";
 import {
   createAppointment,
-  updateAppointment
+  updateAppointment,
 } from "../../actions/appointmentsActions";
 import v from "../../styles/variables";
 
 const dialogTitleStyle = {
-  borderBottom: `1px solid ${v.colorBlack15}`
+  borderBottom: `1px solid ${v.colorBlack15}`,
+  position: "sticky",
+  top: 0,
+  background: v.colorWhite,
+  zIndex: 1,
+};
+
+const dialogActionsStyle = {
+  borderTop: `1px solid ${v.colorBlack15}`,
+  position: "sticky",
+  bottom: 0,
+  background: v.colorWhite,
+  zIndex: 1,
 };
 
 class AppointmentModal extends Component {
@@ -41,7 +53,7 @@ class AppointmentModal extends Component {
       duration: "",
       followUpDate: null,
       followUpTime: "",
-      location: "",
+      location: "Home salon",
       milesDriven: "",
       notes: "",
       productUsed: "",
@@ -50,14 +62,14 @@ class AppointmentModal extends Component {
       service: "",
       time: "",
       tip: "",
-      savingAppointment: false
-    }
+      savingAppointment: false,
+    },
   };
 
   componentDidMount() {
     if (this.props.appointment) {
       this.setState({
-        appointment: this.props.appointment
+        appointment: this.props.appointment,
       });
     }
   }
@@ -65,7 +77,7 @@ class AppointmentModal extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.appointment !== this.props.appointment) {
       this.setState({
-        appointment: this.props.appointment
+        appointment: this.props.appointment,
       });
     }
   }
@@ -77,37 +89,37 @@ class AppointmentModal extends Component {
       this.props
         .updateAppointment({
           ...this.state.appointment,
-          clientId: this.props.clientId
+          clientId: this.props.clientId,
         })
         .then(() => {
           this.props.closeModal();
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
         });
     } else {
       this.props
         .createAppointment({
           ...this.state.appointment,
-          clientId: this.props.clientId
+          clientId: this.props.clientId,
         })
         .then(() => {
           this.props.closeModal();
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
         });
     }
   };
 
   onInputTextChange = (key, value) => {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       return {
         appointment: {
           ...prevState.appointment,
           [key]: value,
-          [`${key}Error`]: ""
-        }
+          [`${key}Error`]: "",
+        },
       };
     });
   };
@@ -147,12 +159,12 @@ class AppointmentModal extends Component {
                   </FormLabel>
                   <Select
                     value={appointment.apptStatus}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("apptStatus", e.target.value)
                     }
                     inputProps={{
                       name: "apptStatus",
-                      id: "appt-status"
+                      id: "appt-status",
                     }}
                   >
                     <MenuItem value="Complete">Complete</MenuItem>
@@ -164,7 +176,7 @@ class AppointmentModal extends Component {
                     id="service"
                     label="Service"
                     value={appointment.service}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("service", e.target.value)
                     }
                   />
@@ -176,11 +188,11 @@ class AppointmentModal extends Component {
                       id="date"
                       label="Appt. date*"
                       value={appointment.date}
-                      onChange={date =>
+                      onChange={(date) =>
                         this.onInputTextChange("date", convertToUnix(date))
                       }
                       KeyboardButtonProps={{
-                        "aria-label": "change date"
+                        "aria-label": "change date",
                       }}
                     />
                   </MuiPickersUtilsProvider>
@@ -191,13 +203,13 @@ class AppointmentModal extends Component {
                     label="Appt. time (MST)"
                     type="time"
                     InputLabelProps={{
-                      shrink: true
+                      shrink: true,
                     }}
                     inputProps={{
-                      step: 300 // 5 min
+                      step: 300, // 5 min
                     }}
                     value={appointment.time}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("time", e.target.value)
                     }
                   />
@@ -207,7 +219,7 @@ class AppointmentModal extends Component {
                     label="Appt. duration (minutes)"
                     type="number"
                     value={appointment.duration}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("duration", e.target.value)
                     }
                   />
@@ -216,7 +228,7 @@ class AppointmentModal extends Component {
                     id="location"
                     label="Location"
                     value={appointment.location}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("location", e.target.value)
                     }
                   />
@@ -226,7 +238,7 @@ class AppointmentModal extends Component {
                     label="Amount paid"
                     type="number"
                     value={appointment.amountPaid}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("amountPaid", e.target.value)
                     }
                   />
@@ -236,7 +248,7 @@ class AppointmentModal extends Component {
                     label="Tip"
                     type="number"
                     value={appointment.tip}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("tip", e.target.value)
                     }
                   />
@@ -245,7 +257,7 @@ class AppointmentModal extends Component {
                     id="discountType"
                     label="Discount type"
                     value={appointment.discountType}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("discountType", e.target.value)
                     }
                   />
@@ -255,7 +267,7 @@ class AppointmentModal extends Component {
                     label="Discount amount"
                     type="number"
                     value={appointment.discountAmount}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("discountAmount", e.target.value)
                     }
                   />
@@ -264,7 +276,7 @@ class AppointmentModal extends Component {
                     id="productUsed"
                     label="Product Used"
                     value={appointment.productUsed}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("productUsed", e.target.value)
                     }
                   />
@@ -273,7 +285,7 @@ class AppointmentModal extends Component {
                     id="retailItemsSold"
                     label="Retail items sold"
                     value={appointment.retailItemsSold}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("retailItemsSold", e.target.value)
                     }
                   />
@@ -283,7 +295,7 @@ class AppointmentModal extends Component {
                     label="Retail items amount"
                     type="number"
                     value={appointment.retailItemsAmount}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange(
                         "retailItemsAmount",
                         e.target.value
@@ -296,7 +308,7 @@ class AppointmentModal extends Component {
                     label="Miles driven"
                     type="number"
                     value={appointment.milesDriven}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("milesDriven", e.target.value)
                     }
                   />
@@ -308,14 +320,14 @@ class AppointmentModal extends Component {
                       id="followUpDate"
                       label="Follow up date"
                       value={appointment.followUpDate}
-                      onChange={date =>
+                      onChange={(date) =>
                         this.onInputTextChange(
                           "followUpDate",
                           convertToUnix(date)
                         )
                       }
                       KeyboardButtonProps={{
-                        "aria-label": "change date"
+                        "aria-label": "change date",
                       }}
                     />
                   </MuiPickersUtilsProvider>
@@ -325,13 +337,13 @@ class AppointmentModal extends Component {
                     label="Follow up time (MST)"
                     type="time"
                     InputLabelProps={{
-                      shrink: true
+                      shrink: true,
                     }}
                     inputProps={{
-                      step: 300 // 5 min
+                      step: 300, // 5 min
                     }}
                     value={appointment.followUpTime}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("followUpTime", e.target.value)
                     }
                   />
@@ -340,14 +352,14 @@ class AppointmentModal extends Component {
                     label="Notes"
                     multiline
                     value={appointment.notes}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("notes", e.target.value)
                     }
                     margin="normal"
                   />
                 </FormControl>
               </DialogContent>
-              <DialogActions>
+              <DialogActions style={dialogActionsStyle}>
                 <Button
                   onClick={this.handleAppointmentSubmit}
                   color="primary"
@@ -370,11 +382,11 @@ class AppointmentModal extends Component {
 
 function mapStateToProps(state) {
   return {
-    appointments: state.appointments.appointmentsList
+    appointments: state.appointments.appointmentsList,
   };
 }
 
 export default connect(mapStateToProps, {
   createAppointment,
-  updateAppointment
+  updateAppointment,
 })(AppointmentModal);
