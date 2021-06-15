@@ -47,7 +47,7 @@ export const AppointmentsTable = (props) => {
                 {appointment.tip}
               </div>
               <div className="at-data-item appointment-discount">
-                {appointment.discountAmount ? "Yes" : "No"}
+                {appointment.discountAmount && appointment.discountAmount > 0 ? "Yes" : "No"}
               </div>
               <div className="at-data-item appointment-notes">
                 {appointment.notes}

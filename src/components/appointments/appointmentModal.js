@@ -52,7 +52,7 @@ class AppointmentModal extends Component {
       discountAmount: "",
       discountType: "",
       duration: "",
-      followUpDate: null,
+      followUpDate: "",
       followUpTime: "",
       location: "Home salon",
       milesDriven: "",
@@ -118,7 +118,7 @@ class AppointmentModal extends Component {
       return {
         appointment: {
           ...prevState.appointment,
-          [key]: value,
+          [key]: value || "",
           [`${key}Error`]: "",
         },
       };
@@ -126,12 +126,11 @@ class AppointmentModal extends Component {
   };
 
   render() {
-    const { closeModal, open, savingAppointment } = this.props;
-    const { appointment } = this.state;
+    const { closeModal, open } = this.props;
+    const { appointment, savingAppointment } = this.state;
 
     return (
       <div className="appointment-modal">
-        {savingAppointment && <Loader />}
         <Dialog
           open={open}
           onClose={closeModal}
@@ -151,9 +150,11 @@ class AppointmentModal extends Component {
               Update appointment
             </DialogTitle>
           )}
-          {!savingAppointment && (
-            <div>
-              <DialogContent style={{ paddingTop: 0 }}>
+          <div>
+            <DialogContent style={{ paddingTop: 0 }}>
+              {savingAppointment ? (
+                <Loader />
+              ) : (
                 <FormControl fullWidth>
                   <FormLabel style={{ marginTop: "16px" }}>
                     Appointment Status*
@@ -251,7 +252,7 @@ class AppointmentModal extends Component {
                       this.onInputTextChange("tip", e.target.value)
                     }
                   />
-                  
+
                   <TextField
                     margin="normal"
                     id="productUsed"
@@ -358,22 +359,26 @@ class AppointmentModal extends Component {
                     margin="normal"
                   />
                 </FormControl>
-              </DialogContent>
-              <DialogActions style={dialogActionsStyle}>
-                <Button
-                  onClick={this.handleAppointmentSubmit}
-                  color="primary"
-                  variant="contained"
-                  disabled={!appointment.date || !appointment.apptStatus}
-                >
-                  Submit
-                </Button>
-                <Button onClick={closeModal} color="primary">
-                  Close
-                </Button>
-              </DialogActions>
-            </div>
-          )}
+              )}
+            </DialogContent>
+            <DialogActions style={dialogActionsStyle}>
+              <Button
+                onClick={this.handleAppointmentSubmit}
+                color="primary"
+                variant="contained"
+                disabled={
+                  !appointment.date ||
+                  !appointment.apptStatus ||
+                  savingAppointment
+                }
+              >
+                Submit
+              </Button>
+              <Button onClick={closeModal} color="primary">
+                Close
+              </Button>
+            </DialogActions>
+          </div>
         </Dialog>
       </div>
     );

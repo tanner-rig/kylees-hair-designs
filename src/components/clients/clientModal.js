@@ -13,11 +13,11 @@ import {
   FormControlLabel,
   FormLabel,
   Select,
-  MenuItem
+  MenuItem,
 } from "@material-ui/core";
 import {
   MuiPickersUtilsProvider,
-  KeyboardDatePicker
+  KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
@@ -56,14 +56,14 @@ class ClientModal extends Component {
       dob: null,
       allergies: "",
       venmo: "",
-      notes: ""
-    }
+      notes: "",
+    },
   };
 
   componentDidMount() {
     if (this.props.client) {
       this.setState({
-        client: this.props.client
+        client: this.props.client,
       });
     }
   }
@@ -72,8 +72,8 @@ class ClientModal extends Component {
     if (prevProps.client !== this.props.client) {
       this.setState({
         client: {
-          ...this.props.client
-        }
+          ...this.props.client,
+        },
       });
     }
   }
@@ -87,7 +87,7 @@ class ClientModal extends Component {
         .then(() => {
           this.props.closeModal();
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
         });
     } else {
@@ -96,31 +96,30 @@ class ClientModal extends Component {
         .then(() => {
           this.props.closeModal();
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
         });
     }
   };
 
   onInputTextChange = (key, value) => {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       return {
         client: {
           ...prevState.client,
-          [key]: value,
-          [`${key}Error`]: ""
-        }
+          [key]: value || "",
+          [`${key}Error`]: "",
+        },
       };
     });
   };
 
   render() {
-    const { closeModal, open, savingClient } = this.props;
-    const { client } = this.state;
+    const { closeModal, open } = this.props;
+    const { client, savingClient } = this.state;
 
     return (
       <div className="client-modal">
-        {savingClient && <Loader />}
         <Dialog
           open={open}
           onClose={closeModal}
@@ -140,9 +139,11 @@ class ClientModal extends Component {
               Update {`${client.firstName} ${client.lastName}`}
             </DialogTitle>
           )}
-          {!savingClient && (
-            <div>
-              <DialogContent style={{ paddingTop: 0 }}>
+          <div>
+            <DialogContent style={{ paddingTop: 0 }}>
+              {savingClient ? (
+                <Loader />
+              ) : (
                 <FormControl fullWidth>
                   <TextField
                     autoFocus
@@ -150,7 +151,7 @@ class ClientModal extends Component {
                     id="firstName"
                     label="First name*"
                     value={client.firstName}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("firstName", e.target.value)
                     }
                   />
@@ -159,7 +160,7 @@ class ClientModal extends Component {
                     id="lastName"
                     label="Last name*"
                     value={client.lastName}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("lastName", e.target.value)
                     }
                   />
@@ -168,7 +169,7 @@ class ClientModal extends Component {
                     id="phone"
                     label="Phone"
                     value={client.phone}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("phone", e.target.value)
                     }
                   />
@@ -178,7 +179,7 @@ class ClientModal extends Component {
                     label="Email"
                     type="email"
                     value={client.email}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("email", e.target.value)
                     }
                   />
@@ -192,11 +193,11 @@ class ClientModal extends Component {
                       id="dob"
                       label="Birth date"
                       value={client.dob}
-                      onChange={date =>
+                      onChange={(date) =>
                         this.onInputTextChange("dob", convertToUnix(date))
                       }
                       KeyboardButtonProps={{
-                        "aria-label": "change date"
+                        "aria-label": "change date",
                       }}
                     />
                   </MuiPickersUtilsProvider>
@@ -205,12 +206,12 @@ class ClientModal extends Component {
                   </FormLabel>
                   <Select
                     value={client.contactMethod}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("contactMethod", e.target.value)
                     }
                     inputProps={{
                       name: "contactMethod",
-                      id: "contact-method"
+                      id: "contact-method",
                     }}
                   >
                     <MenuItem value="text">Text</MenuItem>
@@ -222,7 +223,7 @@ class ClientModal extends Component {
                     id="instagram"
                     label="Instagram handle"
                     value={client.instagram}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("instagram", e.target.value)
                     }
                   />
@@ -232,7 +233,7 @@ class ClientModal extends Component {
                     id="allergies"
                     label="Allergies"
                     value={client.allergies}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("allergies", e.target.value)
                     }
                   />
@@ -241,7 +242,7 @@ class ClientModal extends Component {
                     id="venmo"
                     label="Venmo"
                     value={client.venmo}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("venmo", e.target.value)
                     }
                   />
@@ -252,7 +253,7 @@ class ClientModal extends Component {
                     aria-label="waiver"
                     name="waiver"
                     value={client.waiver}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("waiver", e.target.value)
                     }
                     row
@@ -276,7 +277,7 @@ class ClientModal extends Component {
                     label="Hair history"
                     multiline
                     value={client.hairHistory}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("hairHistory", e.target.value)
                     }
                   />
@@ -285,28 +286,28 @@ class ClientModal extends Component {
                     label="Notes"
                     multiline
                     value={client.notes}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.onInputTextChange("notes", e.target.value)
                     }
                     margin="normal"
                   />
                 </FormControl>
-              </DialogContent>
-              <DialogActions style={dialogActionsStyle}>
-                <Button
-                  onClick={this.handleClientSubmit}
-                  color="primary"
-                  variant="contained"
-                  disabled={!client.firstName || !client.lastName}
-                >
-                  Submit
-                </Button>
-                <Button onClick={closeModal} color="primary">
-                  Close
-                </Button>
-              </DialogActions>
-            </div>
-          )}
+              )}
+            </DialogContent>
+            <DialogActions style={dialogActionsStyle}>
+              <Button
+                onClick={this.handleClientSubmit}
+                color="primary"
+                variant="contained"
+                disabled={!client.firstName || !client.lastName || savingClient}
+              >
+                Submit
+              </Button>
+              <Button onClick={closeModal} color="primary">
+                Close
+              </Button>
+            </DialogActions>
+          </div>
         </Dialog>
       </div>
     );
@@ -315,7 +316,7 @@ class ClientModal extends Component {
 
 function mapStateToProps(state) {
   return {
-    clients: state.clients.clientsList
+    clients: state.clients.clientsList,
   };
 }
 
