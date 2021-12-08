@@ -34,7 +34,7 @@ export const ClientsTable = (props) => {
                   href={`tel:${client.phone}`}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  {`${client.phone}${
+                  {client.phone && `${client.phone}${
                     client.contactMethod === "text"
                       ? "* (text)"
                       : client.contactMethod === "call"
@@ -48,7 +48,7 @@ export const ClientsTable = (props) => {
                   href={`mailto:${client.email}`}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  {`${client.email}${
+                  {client.email && `${client.email}${
                     client.contactMethod === "email" ? "*" : ""
                   }`}
                 </a>

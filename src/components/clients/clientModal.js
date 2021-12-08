@@ -220,6 +220,26 @@ class ClientModal extends Component {
                   </Select>
                   <TextField
                     margin="normal"
+                    id="hairHistory"
+                    label="Hair history"
+                    multiline
+                    value={client.hairHistory}
+                    onChange={(e) =>
+                      this.onInputTextChange("hairHistory", e.target.value)
+                    }
+                  />
+                  <TextField
+                    id="notes"
+                    label="Notes"
+                    multiline
+                    value={client.notes}
+                    onChange={(e) =>
+                      this.onInputTextChange("notes", e.target.value)
+                    }
+                    margin="normal"
+                  />
+                  <TextField
+                    margin="normal"
                     id="instagram"
                     label="Instagram handle"
                     value={client.instagram}
@@ -271,26 +291,6 @@ class ClientModal extends Component {
                       labelPlacement="start"
                     />
                   </RadioGroup>
-                  <TextField
-                    margin="normal"
-                    id="hairHistory"
-                    label="Hair history"
-                    multiline
-                    value={client.hairHistory}
-                    onChange={(e) =>
-                      this.onInputTextChange("hairHistory", e.target.value)
-                    }
-                  />
-                  <TextField
-                    id="notes"
-                    label="Notes"
-                    multiline
-                    value={client.notes}
-                    onChange={(e) =>
-                      this.onInputTextChange("notes", e.target.value)
-                    }
-                    margin="normal"
-                  />
                 </FormControl>
               )}
             </DialogContent>
