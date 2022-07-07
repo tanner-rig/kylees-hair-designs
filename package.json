@@ -42,7 +42,7 @@
     "glamorous": "^5.0.0",
     "history": "^4.10.1",
     "jwt-decode": "^2.2.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "polished": "^3.4.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.0",
