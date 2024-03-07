@@ -21,51 +21,55 @@ export const AppointmentsTable = (props) => {
         <div className="ah-status">Status</div>
         <div className="ah-actions" />
       </div>
-      {appointments.map((appointment) => {
-        return (
-          <div className="appointment-row" key={appointment.appointmentId}>
-            <div
-              className="appointment-data"
-              onClick={() => props.editAppointment(appointment)}
-            >
-              <div className="at-data-item appointment-service">
-                {appointment.service}
-              </div>
-              <div className="at-data-item appointment-date">
-                {convertToDateStamp(appointment.date)}
-              </div>
-              <div className="at-data-item appointment-time">
-                {convertToStandard(appointment.time)}
-              </div>
+      {appointments
+        .sort((a, b) => {
+          return a.date - b.date;
+        })
+        .map((appointment) => {
+          return (
+            <div className="appointment-row" key={appointment.appointmentId}>
+              <div
+                className="appointment-data"
+                onClick={() => props.editAppointment(appointment)}
+              >
+                <div className="at-data-item appointment-service">
+                  {appointment.service}
+                </div>
+                <div className="at-data-item appointment-date">
+                  {convertToDateStamp(appointment.date)}
+                </div>
+                <div className="at-data-item appointment-time">
+                  {convertToStandard(appointment.time)}
+                </div>
 
-              <div className="at-data-item appointment-amount">
-                {appointment.amountCharged}
+                <div className="at-data-item appointment-amount">
+                  {appointment.amountCharged}
+                </div>
+                <div className="at-data-item appointment-tip">
+                  {appointment.tip}
+                </div>
+                <div className="at-data-item appointment-discount">
+                  {appointment.discountAmount && appointment.discountAmount > 0
+                    ? "Yes"
+                    : "No"}
+                </div>
+                <div className="at-data-item appointment-notes">
+                  {appointment.notes}
+                </div>
+                <div className="at-data-item appointment-status">
+                  {appointment.apptStatus}
+                </div>
               </div>
-              <div className="at-data-item appointment-tip">
-                {appointment.tip}
-              </div>
-              <div className="at-data-item appointment-discount">
-                {appointment.discountAmount && appointment.discountAmount > 0
-                  ? "Yes"
-                  : "No"}
-              </div>
-              <div className="at-data-item appointment-notes">
-                {appointment.notes}
-              </div>
-              <div className="at-data-item appointment-status">
-                {appointment.apptStatus}
+              <div className="appointment-actions">
+                <FaTrash
+                  className="row-actions"
+                  onClick={() => props.deleteAppointment(appointment)}
+                  size={16}
+                />
               </div>
             </div>
-            <div className="appointment-actions">
-              <FaTrash
-                className="row-actions"
-                onClick={() => props.deleteAppointment(appointment)}
-                size={16}
-              />
-            </div>
-          </div>
-        );
-      })}
+          );
+        })}
     </div>
   );
 };

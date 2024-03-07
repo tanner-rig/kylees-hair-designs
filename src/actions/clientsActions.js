@@ -54,9 +54,7 @@ export function getClients() {
 
       axios.get(`${API_URL}/clients`, options)
         .then(response => {
-          const clients = response.data.clients.sort((a, b) => {
-            return a.firstName - b.firstName;
-          });
+          const clients = response.data.clients;
 
           // Add clients to redux
           dispatch({ type: GET_CLIENTS, payload: clients });
