@@ -6,6 +6,9 @@ import "./clientsTable.scss";
 
 export const ClientsTable = (props) => {
   const { clients } = props;
+  const sortedClients = cloneDeep(clients)?.sort((a, b) => {
+    return a.firstName - b.firstName;
+  });
 
   return (
     <div className="clients">
@@ -19,10 +22,7 @@ export const ClientsTable = (props) => {
         <div className="ch-notes">Notes</div>
         <div className="ch-actions" />
       </div>
-      {clients
-        .sort((a, b) => {
-          return a.firstName - b.firstName;
-        })
+      {sortedClients
         .map((client) => {
           return (
             <div className="client-table-row" key={client.clientId}>
