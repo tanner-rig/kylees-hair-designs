@@ -213,16 +213,39 @@ class AppointmentModal extends Component {
                       this.onInputTextChange("time", e.target.value)
                     }
                   />
-                  <TextField
-                    margin="normal"
-                    id="duration"
-                    label="Appointment duration (minutes)"
-                    type="number"
+                  <FormLabel style={{ marginTop: "16px" }}>
+                    Appointment Duration
+                  </FormLabel>
+                  <Select
                     value={appointment.duration}
                     onChange={(e) =>
                       this.onInputTextChange("duration", e.target.value)
                     }
-                  />
+                    inputProps={{
+                      name: "apptDuration",
+                      id: "appt-duration",
+                    }}
+                  >
+                    <MenuItem value="30">30 minutes</MenuItem>
+                    <MenuItem value="45">45 minutes</MenuItem>
+                    <MenuItem value="60">1 hour</MenuItem>
+                    <MenuItem value="75">1 hour 15 minutes</MenuItem>
+                    <MenuItem value="90">1 hour 30 minutes</MenuItem>
+                    <MenuItem value="105">1 hour 45 minutes</MenuItem>
+                    <MenuItem value="120">2 hours</MenuItem>
+                    <MenuItem value="135">2 hours 15 minutes</MenuItem>
+                    <MenuItem value="150">2 hours30 minutes</MenuItem>
+                    <MenuItem value="165">2 hours 45 minutes</MenuItem>
+                    <MenuItem value="180">3 hours</MenuItem>
+                    <MenuItem value="195">3 hours 15 minutes</MenuItem>
+                    <MenuItem value="210">3 hours 30 minutes</MenuItem>
+                    <MenuItem value="225">3 hours 45 minutes</MenuItem>
+                    <MenuItem value="240">4 hours</MenuItem>
+                    <MenuItem value="255">4 hours 15 minutes</MenuItem>
+                    <MenuItem value="270">4 hours 30 minutes</MenuItem>
+                    <MenuItem value="285">4 hours 45 minutes</MenuItem>
+                    <MenuItem value="300">5 hours</MenuItem>
+                  </Select>
                   <TextField
                     margin="normal"
                     id="location"
