@@ -1,5 +1,6 @@
 import React from "react";
 import { FaTrash, FaPencilAlt } from "react-icons/fa";
+import { cloneDeep } from "lodash";
 
 import routes from "../../constants/routes";
 import "./clientsTable.scss";
