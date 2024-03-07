@@ -52,7 +52,7 @@ class AppointmentModal extends Component {
       discountAmount: "",
       discountType: "",
       duration: "",
-      followUpDate: "",
+      followUpDate: null,
       followUpTime: "",
       location: "Home salon",
       milesDriven: "",

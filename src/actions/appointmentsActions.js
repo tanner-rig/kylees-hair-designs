@@ -51,7 +51,9 @@ export function getAppointments(clientId) {
 
       axios.get(`${API_URL}/appointments?clientId=${clientId}`, options)
         .then(response => {
-          const appointments = response.data.appointments;
+          const appointments = response.data.appointments.sort((a, b) => {
+            return a.date - b.date;
+          })
 
           // Add appointments to redux
           dispatch({ type: GET_APPOINTMENTS, payload: appointments });
