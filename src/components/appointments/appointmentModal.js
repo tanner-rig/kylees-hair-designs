@@ -234,7 +234,7 @@ class AppointmentModal extends Component {
                     <MenuItem value="105">1 hour 45 minutes</MenuItem>
                     <MenuItem value="120">2 hours</MenuItem>
                     <MenuItem value="135">2 hours 15 minutes</MenuItem>
-                    <MenuItem value="150">2 hours30 minutes</MenuItem>
+                    <MenuItem value="150">2 hours 30 minutes</MenuItem>
                     <MenuItem value="165">2 hours 45 minutes</MenuItem>
                     <MenuItem value="180">3 hours</MenuItem>
                     <MenuItem value="195">3 hours 15 minutes</MenuItem>
